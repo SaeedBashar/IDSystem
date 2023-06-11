@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+
+            <div class="card">
+                <div class="card-body pt-3">
+                    
+                    <ul class="nav nav-tabs nav-tabs-bordered">
+
+                        <li class="nav-item">
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#overview">Overview</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#name-modify">Name Modification</button>
+                        </li>
+
+                        <li class="nav-item">
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#image-update">Image Update</button>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content pt-2">
+
+                        <partial name="partials/_overview" />
+
+                        <partial name="partials/_name-modify" />
+
+                        <partial name="partials/_image-update" />
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
