@@ -54,7 +54,7 @@ namespace StudentID.Controllers
 				Guid imgId = Guid.NewGuid();
 				string fname = String.Format("{0}-{1}{2}", imgId.ToString(), fileName, ext);
 
-				string path = Path.Combine(wwwRootPath + "/Image/ProofOfNames", fname);
+				string path = Path.Combine(wwwRootPath + "/image/ProofOfNames", fname);
 
 				using(var  fileStream = new FileStream(path, FileMode.Create))
                 {
@@ -93,7 +93,7 @@ namespace StudentID.Controllers
 				Guid imgId = Guid.NewGuid();
 				string fname = String.Format("{0}-{1}{2}", imgId.ToString(), fileName, ext);
 
-				string path = Path.Combine(wwwRootPath + "/Image/updates/", fname);
+				string path = Path.Combine(wwwRootPath + "/image/updates/", fname);
 
 				using (var fileStream = new FileStream(path, FileMode.Create))
 				{

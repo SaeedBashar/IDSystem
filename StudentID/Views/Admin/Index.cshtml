@@ -8,7 +8,7 @@
 
             <div class="card">
                 <div class="card-body pt-3">
-                    
+
                     <ul class="nav nav-tabs nav-tabs-bordered">
 
                         <li class="nav-item">
@@ -41,3 +41,33 @@
         </div>
     </div>
 </section>
+
+@section Scripts {
+<script>
+    var studentList = []
+                function viewDetails(el){
+                    let index = el.parentNode.getElementsByTagName('i')[0].textContent;
+
+                }
+            window.onload = async() => {
+
+
+                {
+                    let tableContent = "";
+                    let data = await fetch("/admin/getIndexData")
+                    studentList = await data.json();
+                    for(let i=0; i< data.length; i++){
+                    tableContent += `
+                         <tr>
+                             <td>${data[i].idCard.studentNo}</td>
+                             <td>${data[i].student.lastName} ${data[i].student.otherNames}</td>
+                             <td class="fw-bold">${data[i].mStud.lastName} ${data[i].mStud.otherNames}</td>
+                             <td><button onclick="viewDetails(this)" class="btn btn-success">View</button><i class="d-none">${i}</i></td>
+                         </tr>
+                    `
+                    }
+                    document.getElementById("nameModifyContent").innerHTML = tableContent;
+                }
+            }
+</script>
+}

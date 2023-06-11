@@ -4,7 +4,7 @@
             <label for="profileImage"
                    class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
             <div class="col-md-8 col-lg-9">
-                <img src="assets/img/profile-img.jpg" alt="Profile">
+                <img src="image/approved/profile-img.jpg" alt="Profile">
                 <div class="pt-2">
                     <button type="button" title="Upload new ID image" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#largeModal">
                         Request Image
@@ -38,18 +38,18 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-4">
-                        <img style="display:inline-block; max-width: 120px" src="assets/img/profile-img.jpg"/>
+                        <img style="display:inline-block; max-width: 120px" src="image/approved/profile-img.jpg"/>
                     </div>
                     <div class="col-lg-4">
                         <form id="imgUpdate" asp-action="ImageUpdate" method="POST" class="row g-3" enctype="multipart/form-data">
                             <label for="image" class="form-label">New Image</label>
-                            <input type="file" class="form-control new-img" name="Image" id="image">
+                            <input type="file" accept="image/*" class="form-control new-img" name="Image" id="image">
                         </form>
                     </div>
                     <div class="col-lg-4">
                         <div class="row">
                             <div class="col">
-                                <img id="previewImg" style="display:inline-block; max-width: 120px" src="img/img_avatar.png"/>
+                                <img id="previewImg" style="display:inline-block; max-width: 120px" src="image/approved/avatar1.png"/>
                             </div>
                         </div>
                         <div class="modal-footer">

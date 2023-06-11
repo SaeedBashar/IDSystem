@@ -9,22 +9,3 @@ window.onload = () => {
         console.log("Well Done!!!")
     }
 }
-
-// Set The Preview Image During Image Update Request
-
-const fileInput = document.querySelector('.new-img');
-const previewImage = document.getElementById('previewImg');
-
-fileInput.addEventListener('change', function (event) {
-    const file = event.target.files[0];
-
-    if (file) {
-        const reader = new FileReader();
-
-        reader.addEventListener('load', function () {
-            previewImage.setAttribute('src', reader.result);
-        });
-
-        reader.readAsDataURL(file);
-    }
-});

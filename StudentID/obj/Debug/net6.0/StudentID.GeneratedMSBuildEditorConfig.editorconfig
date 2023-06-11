@@ -31,8 +31,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGFydGlhbHNcX292ZXJ2aWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Bashar/Desktop/Bash/C\#/IDSystem/StudentID/Views/Admin/Students.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3R1ZGVudHMuY3NodG1s
+[C:/Users/Bashar/Desktop/Bash/C\#/IDSystem/StudentID/Views/Admin/StudentDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cU3R1ZGVudERldGFpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Bashar/Desktop/Bash/C\#/IDSystem/StudentID/Views/Auth/SignIn.cshtml]
