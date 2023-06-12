@@ -32,6 +32,9 @@ namespace StudentID.Models
 		[Required]
 		public string Password { get; set; }
 
+		[Required]
+		public string ImageUrl { get; set; }
+
 		[ForeignKey("AccessLevel")]
 		[Required]
 		public string AccessLevelId { get; set; }

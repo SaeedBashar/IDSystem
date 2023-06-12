@@ -44,30 +44,40 @@
 
 @section Scripts {
 <script>
-    var studentList = []
-                function viewDetails(el){
-                    let index = el.parentNode.getElementsByTagName('i')[0].textContent;
+                async function viewDetails(el){
+                   //let value = el.parentNode.getElementsByTagName('i')[0].textContent;
+                   let value = el.nextSibling.textContent;
+                   let res = await fetch('/admin/getNameModificationDetail?Id=' + value)
+                   let data = await res.json();
 
+                   getEl("#detailForm #lastName").value = data.student.lastName;
+                   getEl("#detailForm #otherNames").value = data.student.otherNames;
+                   getEl("#detailForm #studentNo").value = data.idCard.studentNo;
+                   getEl("#detailForm #indexNo").value = data.idCard.indexNo;
+                   getEl("#detailForm #email").value = data.student.email;
+                   getEl("#detailForm #phone").value = data.student.phone;
+                   getEl("#detailForm #faculty").value = data.student.faculty;
+                   getEl("#detailForm #college").value = data.student.college;
+                   getEl("#detailForm #hallOfAffiliation").value = data.student.hallOfAffiliation;
+                   getEl("#detailForm #program").value = data.program.programName;
+                   getEl("#proofImg").src = "image/proofOfNames/" + data.nModify.fileName;
+
+                   getEl("#currentName").innerText = `${data.student.lastName} ${data.student.otherNames}`;
+                   getEl("#newName").innerText = `${data.nModify.lastName} ${data.nModify.otherNames}`;
+
+                   const btn = document.querySelector("#nameModifyDetail");
+                   btn.click()
+                   console.log(data)
                 }
+
+                function getEl(el){
+                    return document.querySelector(el)
+                }
+
             window.onload = async() => {
 
 
-                {
-                    let tableContent = "";
-                    let data = await fetch("/admin/getIndexData")
-                    studentList = await data.json();
-                    for(let i=0; i< data.length; i++){
-                    tableContent += `
-                         <tr>
-                             <td>${data[i].idCard.studentNo}</td>
-                             <td>${data[i].student.lastName} ${data[i].student.otherNames}</td>
-                             <td class="fw-bold">${data[i].mStud.lastName} ${data[i].mStud.otherNames}</td>
-                             <td><button onclick="viewDetails(this)" class="btn btn-success">View</button><i class="d-none">${i}</i></td>
-                         </tr>
-                    `
-                    }
-                    document.getElementById("nameModifyContent").innerHTML = tableContent;
-                }
+               
             }
 </script>
 }
