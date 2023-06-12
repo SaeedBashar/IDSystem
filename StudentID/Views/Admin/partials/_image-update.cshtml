@@ -9,17 +9,33 @@
                   <table class="table table-borderless">
                     <thead>
                       <tr>
-                        <th scope="col">Old Picture</th>
+                        <th scope="col">Current Picture</th>
                         <th scope="col">New Picture</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row"><a href="#"><img src="assets/img/product-1.jpg" alt=""></a></th>
-                        <th scope="row"><a href="#"><img src="assets/img/product-2.jpg" alt=""></a></th>
-                        <td><a href="#" class="btn btn-info">Accept</a><a href="#" class="mx-3 btn btn-danger">Reject</a></td>
-                      </tr>
+                            @if (Model.imageUpdates.Count > 0)
+                            {
+                                @foreach (var stud in Model.imageUpdates)
+                                {
+                                    <tr id="@stud.studentId" reqId="@stud.requestId">
+                                        <th scope="row"><a href="#"><img src="image/approved/@stud.currentImg" alt=""></a></th>
+                                        <th scope="row"><a href="#"><img src="image/updates/@stud.newImg" alt=""></a></th>
+                                        <td>
+                                            <button id="approveImage" class="btn btn-info">Accept</button>
+                                            <button id="rejectImage" class="mx-3 btn btn-danger">Reject</button>
+                                        </td>
+                                    </tr>
+                                }
+
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="text-center" colspan="4">No Image Update Request Available</td>
+                                </tr>
+                            }
                     </tbody>
                   </table>
 

@@ -101,6 +101,33 @@
                     currentStudent = null;
                 }
 
+                async function imageUpdate(url, ev){
+                    let tr = ev.target.parentNode.parentNode
+                    
+                    let obj = {
+                            requestId: tr.getAttribute("reqId"),
+                            studentId: tr.getAttribute("id")
+                        }
+                        
+                    const res = await fetch("/admin/" + url, {
+                        method: 'POST',
+                        headers: {
+                           'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(obj)
+                    })
+                    const data = await res.json()
+                    console.log('type', typeof(data.status))
+                    if(data.status){
+                        let parent = tr.parentNode;
+                        parent.removeChild(tr);
+                    }
+
+                    getEl("#requestMsg").innerText = data.msg
+                    getEl("#requestStatus").click();
+                    currentStudent = null;
+                }
+
                 function getEl(el){
                     return document.querySelector(el)
                 }
@@ -114,6 +141,15 @@
                 getEl("#rejectNameModify").addEventListener('click', ()=>{
                     nameModification("rejectNameModificationRequest")
                 })
+
+                getEl("#approveImage").addEventListener('click', (ev)=>{
+                    imageUpdate("approveImageUpdate", ev)
+                })
+
+                getEl("#rejectImage").addEventListener('click', (ev)=>{
+                    imageUpdate("rejectImageUpdate", ev)
+                })
+
             }
 </script>
 }
