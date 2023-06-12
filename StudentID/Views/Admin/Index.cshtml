@@ -44,11 +44,16 @@
 
 @section Scripts {
 <script>
+
+    var currentStudent = null;
+
                 async function viewDetails(el){
                    //let value = el.parentNode.getElementsByTagName('i')[0].textContent;
                    let value = el.nextSibling.textContent;
                    let res = await fetch('/admin/getNameModificationDetail?Id=' + value)
                    let data = await res.json();
+
+                   currentStudent = data;
 
                    getEl("#detailForm #lastName").value = data.student.lastName;
                    getEl("#detailForm #otherNames").value = data.student.otherNames;
@@ -67,7 +72,33 @@
 
                    const btn = document.querySelector("#nameModifyDetail");
                    btn.click()
-                   console.log(data)
+                   console.log('returned ', data)
+                }
+
+                async function nameModification(url){
+                    let obj = {
+                            requestId: currentStudent.nModify.id,
+                            studentId: currentStudent.student.id
+                        }
+                        console.log(obj)
+                    const res = await fetch("/admin/" + url, {
+                        method: 'POST',
+                        headers: {
+                           'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(obj)
+                    })
+                    const data = await res.json()
+
+                    if(data.status){
+                        let trEl = getEl("#" + currentStudent.student.id)
+                        let parent = trEl.parentNode;
+                        parent.removeChild(trEl);
+                    }
+
+                    getEl("#requestMsg").innerText = data.msg
+                    getEl("#requestStatus").click();
+                    currentStudent = null;
                 }
 
                 function getEl(el){
@@ -76,8 +107,13 @@
 
             window.onload = async() => {
 
-
+                getEl("#acceptNameModify").addEventListener('click', ()=>{
+                    nameModification("approveNameModificationRequest")
+                })
                
+                getEl("#rejectNameModify").addEventListener('click', ()=>{
+                    nameModification("rejectNameModificationRequest")
+                })
             }
 </script>
 }
