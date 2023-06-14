@@ -1,24 +1,30 @@
-/*html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-  margin-bottom: 60px;
-}*/
 
 .main {
     margin-top: 60px;
     padding: 20px 30px;
     transition: all 0.3s;
 }
+
+.ls-table-container {
+    overflow-x: auto;
+    width: 100%;
+}
+
+    .ls-table-container table {
+        border-collapse: collapse;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .ls-table-container th,
+    .ls-table-container td {
+        padding: 8px;
+        border: 1px solid #ddd;
+    }
+
+        .ls-table-container th:first-child,
+        .ls-table-container td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: #f2f2f2;
+        }

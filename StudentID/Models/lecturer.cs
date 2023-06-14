@@ -28,7 +28,7 @@ namespace StudentID.Models
 
 		[ForeignKey("AccessLevel")]
 		[Required]
-		public string AccessLevelId { get; set; }
+		public Guid AccessLevelId { get; set; }
 
 		[ForeignKey("Course")]
 		[Required]
