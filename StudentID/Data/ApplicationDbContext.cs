@@ -23,5 +23,9 @@ namespace StudentID.Data
         public DbSet<NameModificationDocument> NameModificationDocuments { get; set; }
 
 		public DbSet<ImageUpdate> ImageUpdates { get; set; }
+
+		public DbSet<Lecturer> Lecturers { get; set; }
+
+		public DbSet<Course> Courses { get; set; }
 	}
 }

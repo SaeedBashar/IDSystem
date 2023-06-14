@@ -177,6 +177,7 @@ namespace StudentID.Controllers
 					System.IO.File.Delete(oldPath);
 					System.IO.File.Move(newPath, Path.Combine(wwwRootPath + "/image/approved", nModify.FileName));
 					student.ImageUrl = nModify.FileName;
+					_db.ImageUpdates.Remove(nModify);
 					await _db.SaveChangesAsync();
 					Console.WriteLine("File removed successfully");
 				}

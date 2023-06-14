@@ -5,12 +5,12 @@ using StudentID.Models.Requests;
 
 namespace StudentID.Controllers
 {
-	public class StudentController : Controller
+	public class LecturerController : Controller
 	{
 		private readonly ApplicationDbContext _db;
 		private readonly IWebHostEnvironment _hostEnv;
 
-		public StudentController(ApplicationDbContext db, IWebHostEnvironment hostEnv)
+		public LecturerController(ApplicationDbContext db, IWebHostEnvironment hostEnv)
 		{
 			this._db = db;
 			this._hostEnv = hostEnv;
