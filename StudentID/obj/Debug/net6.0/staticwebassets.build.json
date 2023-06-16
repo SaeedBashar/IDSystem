@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ItfeNsHLKXfhMlXnI/Xny4byeXV8Lf+Qrh//FrYamYE=",
+  "Hash": "vZy3315/LXzpdyOaU+S+qk5OXRKKtgRQvoEzR7yNbvU=",
   "Source": "StudentID",
   "BasePath": "_content/StudentID",
   "Mode": "Default",
@@ -5829,6 +5829,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\data\\lectures.json",
+      "SourceId": "StudentID",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
+      "BasePath": "_content/StudentID",
+      "RelativePath": "data/lectures.json",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\data\\lectures.json"
     },
     {
       "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\favicon.ico",

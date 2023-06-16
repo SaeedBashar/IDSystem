@@ -13,19 +13,18 @@
                 @*<div class="col-xl-4">
 
                     <div class="card">
-                        <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                            <img src="image/approved/@Model.info.Student.ImageUrl" alt="Profile" class="rounded-circle">
-                        </div>
+                    <img src="image/approved/@Model.info.Student.ImageUrl" alt="Profile" class="rounded-circle">
+                    </div>
                     </div>
 
-                </div>*@
+                    </div>*@
 
                 <div class="col-xl-8 offset-xl-2">
-
                     <div class="card">
                         <div class="card-body pt-3">
-                            
+
                             <ul class="nav nav-tabs nav-tabs-bordered">
 
                                 <li class="nav-item">
@@ -37,11 +36,11 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#lectures">Start Lecture</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#lectures">Lectures</button>
                                 </li>
-                                
+
                             </ul>
-                            
+
                             <div class="tab-content pt-2">
                                 <partial name="partials/_details" />
                                 <partial name="partials/_students" />
@@ -56,3 +55,64 @@
         </div>
     </div>
 </section>
+
+@section Scripts{
+<script>
+            const startLecture = async ()=>{
+                const WeekNo = getEl("#weekNo").value;
+                const LectureDate = getEl("#lectureDate").value;
+                const StartTime = getEl("#startTime").value;
+                const EndTime = getEl("#endTime").value;
+
+                const res = await fetch("lecturer/InitLecture", {
+                    method: "POST",
+                    headers : {
+                        "Content-Type": "Application/json"
+                    },
+                    body: JSON.stringify({WeekNo, LectureDate, StartTime, EndTime})
+                })
+                console.log(res)
+                const data = await res.json();
+
+                if(data.status){
+                     let lecBody = getEl("#lectureBody")
+                     let tr = document.createElement('tr');
+    let wn = document.createElement('td');
+    let wnt = document.createTextNode(WeekNo)
+    wn.appendChild(wnt)
+
+    let ld = document.createElement('td');
+    let ldt = document.createTextNode(LectureDate)
+    ld.appendChild(ldt)
+
+    let st = document.createElement('td');
+    let stt = document.createTextNode(StartTime)
+    st.appendChild(stt)
+
+    let et = document.createElement('td');
+    let ett = document.createTextNode(EndTime)
+    et.appendChild(ett)
+
+            tr.appendChild(wn)
+            tr.appendChild(ld)
+            tr.appendChild(st)
+            tr.appendChild(et)
+
+            lecBody.appendChild(tr);
+                }
+
+                getEl("#requestMsg").innerText = data.msg
+                getEl("#requestStatus").click();
+                console.log(data)
+
+            }
+
+            const getEl = (arg)=>{
+                return document.querySelector(arg);
+            }
+
+            window.onload = ()=>{
+                getEl("#initLecture").addEventListener('click', startLecture);
+            }
+</script>
+}

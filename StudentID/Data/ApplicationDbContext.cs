@@ -26,6 +26,8 @@ namespace StudentID.Data
 
 		public DbSet<Lecturer> Lecturers { get; set; }
 
+		public DbSet<Lectures> Lectures { get; set; }
+
 		public DbSet<Course> Courses { get; set; }
 	}
 }

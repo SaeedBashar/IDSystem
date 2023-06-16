@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "sI8SOXqLi26EkZ75px3MF2DTxdX59LxcDfnUo8I+qTcnRv/kalJ2K8OaQABtg8zc794+FGCztOsTZiXpVMFG0w==",
+  "dgSpecHash": "QuI4JakohLsIZNA2KRT3ShiJ4vBc3aI22QgnOXnxEDzrqBbevTP4R4mo5u5luQhGzriX80X0XkTirrotAzqoqg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\StudentID.csproj",
   "expectedPackageFiles": [
@@ -78,7 +78,7 @@
     "C:\\Users\\Bashar\\.nuget\\packages\\microsoft.win32.systemevents\\6.0.0\\microsoft.win32.systemevents.6.0.0.nupkg.sha512",
     "C:\\Users\\Bashar\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Bashar\\.nuget\\packages\\netstandard.library\\1.6.1\\netstandard.library.1.6.1.nupkg.sha512",
-    "C:\\Users\\Bashar\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Bashar\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Bashar\\.nuget\\packages\\nuget.common\\6.3.1\\nuget.common.6.3.1.nupkg.sha512",
     "C:\\Users\\Bashar\\.nuget\\packages\\nuget.configuration\\6.3.1\\nuget.configuration.6.3.1.nupkg.sha512",
     "C:\\Users\\Bashar\\.nuget\\packages\\nuget.dependencyresolver.core\\6.3.1\\nuget.dependencyresolver.core.6.3.1.nupkg.sha512",

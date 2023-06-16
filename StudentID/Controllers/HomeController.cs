@@ -15,7 +15,7 @@ namespace StudentID.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return RedirectToAction("SignIn", "Auth");
 		}
 
 		public IActionResult Privacy()
