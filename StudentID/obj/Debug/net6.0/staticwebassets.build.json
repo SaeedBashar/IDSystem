@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vZy3315/LXzpdyOaU+S+qk5OXRKKtgRQvoEzR7yNbvU=",
+  "Hash": "eGdo7G3zopqVaLfX9Fd7eG11im6+4OPNcenuCEu2S6s=",
   "Source": "StudentID",
   "BasePath": "_content/StudentID",
   "Mode": "Default",
@@ -5865,6 +5865,23 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
+      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg",
+      "SourceId": "StudentID",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
+      "BasePath": "_content/StudentID",
+      "RelativePath": "Image/approved/8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Image\\approved\\8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg"
+    },
+    {
       "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\avatar1.png",
       "SourceId": "StudentID",
       "SourceType": "Discovered",
@@ -5880,23 +5897,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Image\\approved\\avatar1.png"
-    },
-    {
-      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\cc0caf7e-4121-4894-b03d-41fe8127390d-pic1.jpeg",
-      "SourceId": "StudentID",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
-      "BasePath": "_content/StudentID",
-      "RelativePath": "Image/approved/cc0caf7e-4121-4894-b03d-41fe8127390d-pic1.jpeg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Image\\approved\\cc0caf7e-4121-4894-b03d-41fe8127390d-pic1.jpeg"
     },
     {
       "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\img\\id-back.svg",

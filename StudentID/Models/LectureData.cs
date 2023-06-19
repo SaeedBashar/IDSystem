@@ -7,13 +7,13 @@ namespace StudentID.Models
 	{
 		public string Id { get; set; }
 
-		public List<string> Students { get; set; }
+		public IList<string> Students { get; set; }
 	}
 
 	public class LectureData
 	{
 		public string LecturerId { get; set; }
 
-		public LectureDataModel Data { get; set; }
+		public IList<LectureDataModel> Data { get; set; }
 	}
 }

@@ -69,9 +69,47 @@
         </div>
     </div>
 </section>
+<partial name="_status"/>
 
 @section Scripts {
     <script>
+        const imageUpdateFunc = async ()=>{
+            var form = getEl("#imgUpdate");
+
+            var formData = new FormData(form);
+
+            const res = await fetch("/student/imageUpdate", {
+                method: "POST",
+                body: formData
+            })
+            console.log(res)
+            const data = await res.json()
+            console.log(data)
+            getEl("#requestMsg").innerText = data.msg
+            getEl("#requestStatus").click();
+        }
+        const nameModification = async ()=>{
+            var form = getEl("#nameMod");
+
+            var formData = new FormData(form);
+
+            const res = await fetch("/student/modifyName", {
+                method: "POST",
+                body: formData
+            })
+            console.log(res)
+            const data = await res.json()
+            getEl("#requestMsg").innerText = data.msg
+            getEl("#requestStatus").click();
+        }
+        const joinLecture = async ()=>{
+            getEl("#requestMsg").innerText = "Hello QR"
+            getEl("#requestStatus").click();
+        }
+        const getEl = (arg)=>{
+            return document.querySelector(arg);
+        }
+
         window.onload = () => {
          // Set The Preview Image During Image Update Request
                 (()=>{
@@ -93,7 +131,15 @@
                     });
                 })()
 
-               
+            getEl('#nameModBtn').addEventListener('click', nameModification)
+            getEl('#imgUpdateBtn').addEventListener('click', imageUpdateFunc)
+            
+            const lecBtns = document.querySelectorAll('.lectBtn');
+            lecBtns.forEach(element => {
+            lecBtns.addEventListener('click', event => {
+                joinLecture(event)
+            });
+});
             var qrcode = new QRCode(document.getElementById("qrcode"), {
                 text: "http://jindo.dev.naver.com/collie",
                 width: 128,

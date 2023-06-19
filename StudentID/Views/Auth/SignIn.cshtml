@@ -29,11 +29,31 @@
                   </div>
 
                   <form asp-controller="Auth" asp-action="SignIn" method="POST" class="row g-3 needs-validation" novalidate>
-
                     <div class="col-12">
+                        <label class="form-label">User Role</label>
+                        <select name="UserRole" id="UserRole" class="form-select" aria-label="Default select example">
+                            <option value="" selected></option>
+                            <option value="admin">Admin</option>
+                            <option value="lecturer">Lecturer</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </div>
+                    <div class="col-12" id="stdn">
                       <label for="StudentNumber" class="form-label">Student Number</label>
                       <input type="text" name="StudentNumber" class="form-control" id="StudentNumber" required>
                       <div class="invalid-feedback">Please enter your Student Number!</div>
+                    </div>
+
+                    <div class="col-12" id="lecn">
+                      <label for="lecturerNumber" class="form-label">Lecturer Number</label>
+                      <input type="text" name="StudentNumber" class="form-control" id="lecturerNumber" required>
+                      <div class="invalid-feedback">Please enter your lecturer Number!</div>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="email" class="form-label">Email</label>
+                      <input type="text" name="email" class="form-control" id="email" required>
+                      <div class="invalid-feedback">Please enter your email!</div>
                     </div>
 
                     <div class="col-12">
@@ -57,3 +77,32 @@
       </section>
 
     </div>
+
+    @section Scripts{
+        <script>
+
+            const adjustScreen = e=>{
+                const role = e.target.value;
+                if(role == 'lecturer'){
+                    getEl('#lecn').style.display = 'block';
+                    getEl('#stdn').style.display = 'none';
+                }else if(role == 'student'){
+                    getEl('#stdn').style.display = 'block';
+                    getEl('#lecn').style.display = 'none';
+                }else{
+                    getEl('#lecn').style.display = 'none';
+                    getEl('#stdn').style.display = 'none';
+                }
+            }
+            
+            const getEl = (arg)=>{
+                return document.querySelector(arg)
+            }
+                
+            window.onload = ()=>{
+                getEl('#lecn').style.display = 'none';
+                getEl('#stdn').style.display = 'none';
+                getEl("#UserRole").addEventListener('change', e=>adjustScreen(e));
+            }
+        </script>
+    }

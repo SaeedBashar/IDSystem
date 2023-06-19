@@ -32,16 +32,16 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-4">
-                        <img style="display:inline-block; max-width: 120px" src="image/approved/profile-img.jpg"/>
+                        <img style="display:inline-block; max-width: 120px" src="image/approved/@Model.info.Student.ImageUrl"/>
                     </div>
                     <div class="col-lg-4">
-                        <form id="imgUpdate" asp-action="ImageUpdate" method="POST" class="row g-3" enctype="multipart/form-data">
+                        <form id="imgUpdate" class="row g-3" enctype="multipart/form-data">
+                        @*<form id="imgUpdate" asp-action="ImageUpdate" method="POST" class="row g-3" enctype="multipart/form-data">*@
                             <label for="image" class="form-label">New Image</label>
                             <input type="file" accept="image/*" class="form-control new-img" name="Image" id="image">
                         </form>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                           <button type="submit" class="btn btn-primary btn-sm" form="imgUpdate">Submit</button>
+                           <button id="imgUpdateBtn" type="button" class="btn btn-primary btn-sm" form="imgUpdate">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,8 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
-                        <form asp-action="ModifyName" method="POST" class="row g-3" enctype="multipart/form-data">
+                        <form id="nameMod" class="row g-3">
+                        @*<form id="nameMod" asp-action="ModifyName" method="POST" class="row g-3" enctype="multipart/form-data">*@
                             <div class="col-12">
                                 <label for="OLastName" class="form-label">Last Name(Current)</label>
                                 <input type="text" class="form-control" disabled value="@Model.info.Student.LastName">
@@ -96,7 +97,7 @@
                                 <input type="file" accept="image/*" class="form-control" name="Image" id="Image">
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button id="nameModBtn" type="button" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
 

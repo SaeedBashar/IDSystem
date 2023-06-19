@@ -1,11 +1,1 @@
-﻿{
-	"lectures": [
-		{
-			"LecturerId": "baeabf3a-6429-4f32-a624-4bc6b616e7cc",
-			"Data": {
-				"Id": 0,
-				"Students": []
-			}
-		}
-	]
-}
+{"Lectures":[{"LecturerId":"baeabf3a-6429-4f32-a624-4bc6b616e7cc","Data":[{"Id":"6ed026dc-52e8-4692-92fd-3e80fe9fa8c7","Students":[]},{"Id":"3dedbb5f-5a17-4b39-823d-0ac8b4b14c7e","Students":[]}]}]}

@@ -48,16 +48,16 @@ namespace StudentID.Controllers
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ModifyName(NameModificationRequest req)
 		{
 			if (HttpContext.Session.GetString("IsAuth") == "false")
 			{
-				return RedirectToAction("SignIn", "Auth");
+				return Json(new { status = false, msg = "Authentication Failed!!" });
 			}
 
 			if (ModelState.IsValid)
-            {
+			{
 				string wwwRootPath = _hostEnv.WebRootPath;
 				string fileName = Path.GetFileNameWithoutExtension(req.Image.FileName);
 				string ext = Path.GetExtension(req.Image.FileName);
@@ -67,10 +67,10 @@ namespace StudentID.Controllers
 
 				string path = Path.Combine(wwwRootPath + "/image/ProofOfNames", fname);
 
-				using(var  fileStream = new FileStream(path, FileMode.Create))
-                {
+				using (var fileStream = new FileStream(path, FileMode.Create))
+				{
 					await req.Image.CopyToAsync(fileStream);
-					
+
 					var nModify = new NameModificationDocument()
 					{
 						Id = imgId,
@@ -82,17 +82,19 @@ namespace StudentID.Controllers
 					await _db.NameModificationDocuments.AddAsync(nModify);
 					await _db.SaveChangesAsync();
 				}
-            }
-			return RedirectToAction("Index");
+			}
+
+			return Json(new { status = true, msg = "Name Modification Request Sent Successfully!!" });
 		}
 
+
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ImageUpdate(ImageUpdateRequest req)
 		{
 			if (HttpContext.Session.GetString("IsAuth") == "false")
 			{
-				return RedirectToAction("SignIn", "Auth");
+				return Json(new { status = false, msg = "Authentication Failed!!" });
 			}
 
 			if (ModelState.IsValid)
@@ -120,10 +122,14 @@ namespace StudentID.Controllers
 					await _db.SaveChangesAsync();
 				}
 			}
-			
-			return RedirectToAction("Index");
+
+			return Json(new { status = true, msg = "Image Update Request Sent Successfully!!" });
 		}
-	
 		
+		[HttpPost]
+		public async Task<IActionResult> JoinLecture()
+		{
+			return View();
+		}
 	}
 }
