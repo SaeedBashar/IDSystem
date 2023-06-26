@@ -22,38 +22,38 @@ namespace StudentID.Controllers
 		{
 			var email = credentials.Email;
 			var pword = credentials.Password;
-			if(credentials.UserRole == "admin")
+			if (credentials.UserRole == "admin")
 			{
-			
-				var admin =  _db.Admins.SingleOrDefault(a => a.Email == email && a.Password == pword);
-				if(admin != null)
-				{
-				HttpContext.Session.SetString("LastName", admin.LastName);
-				HttpContext.Session.SetString("OtherNames", admin.OtherNames);
-				HttpContext.Session.SetString("IsAuth", "true");
-				HttpContext.Session.SetString("Id", admin.Id.ToString());
 
-				return RedirectToAction("Index", "Admin");
+				var admin = _db.Admins.SingleOrDefault(a => a.Email == email && a.Password == pword);
+				if (admin != null)
+				{
+					HttpContext.Session.SetString("LastName", admin.LastName);
+					HttpContext.Session.SetString("OtherNames", admin.OtherNames);
+					HttpContext.Session.SetString("IsAuth", "true");
+					HttpContext.Session.SetString("Id", admin.Id.ToString());
+
+					return RedirectToAction("Index", "Admin");
 				}
 			}
-			else if(credentials.UserRole == "lecturer")
+			else if (credentials.UserRole == "lecturer")
 			{
-				var lecturer = _db.Lecturers.SingleOrDefault(a => 
-						a.Email == email && 
+				var lecturer = _db.Lecturers.SingleOrDefault(a =>
+						a.Email == email &&
 						a.Password == pword &&
 						a.LecturerNo == credentials.LecturerNumber);
-				if(lecturer != null)
+				if (lecturer != null)
 				{
-				HttpContext.Session.SetString("LastName", lecturer.LastName);
-				HttpContext.Session.SetString("OtherNames", lecturer.OtherNames);
-				HttpContext.Session.SetString("IsAuth", "true");
-				HttpContext.Session.SetString("Id", lecturer.Id.ToString());
+					HttpContext.Session.SetString("LastName", lecturer.LastName);
+					HttpContext.Session.SetString("OtherNames", lecturer.OtherNames);
+					HttpContext.Session.SetString("IsAuth", "true");
+					HttpContext.Session.SetString("Id", lecturer.Id.ToString());
 
-				return RedirectToAction("Index", "Lecturer");
+					return RedirectToAction("Index", "Lecturer");
 
 				}
 			}
-			else if(credentials.UserRole == "student")
+			else if (credentials.UserRole == "student")
 			{
 				var query = (from s in _db.Students
 							 join c in _db.IDCards on s.Id equals c.StudentId
@@ -70,11 +70,12 @@ namespace StudentID.Controllers
 
 					return RedirectToAction("Index", "Student");
 				}
-				
+
 			}
 
 			HttpContext.Session.SetString("isAuth", "false");
 			return NotFound();
+
 		}
 	}
 }

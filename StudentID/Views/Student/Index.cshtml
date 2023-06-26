@@ -102,14 +102,57 @@
             getEl("#requestMsg").innerText = data.msg
             getEl("#requestStatus").click();
         }
-        const joinLecture = async ()=>{
-            getEl("#requestMsg").innerText = "Hello QR"
+        const joinLecture = async (ev)=>{
+
+            const courseId = ev.target.getAttribute('courseId')
+            const indexNo = ev.target.getAttribute('indexNo')
+            const studentNo = ev.target.getAttribute('studentNo')
+            
+            const res = await fetch("/Student/JoinLecture", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "Application/json"
+                },
+                body: JSON.stringify({courseId, studentNo, indexNo })
+            })
+            const data = await res.json();
+            console.log(data)
+            if(data.status){
+               var qrCont = document.createElement("div");
+               qrCont.id = "qrcode";
+               qrCont.style.width = "128px";
+               qrCont.style.margin = "auto";
+              
+               getEl("#requestMsg").appendChild(qrCont);
+
+               var qrcode = new QRCode(getEl("#qrcode"), {
+                text: "Lecturer/AddStudent?reqHash=" + data.requestHash,
+                width: 128,
+                height: 128,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+               });
+            }else{
+                getEl("#requestMsg").innerText = data.msg
+            }
+             getEl("#statusTitle").innerText = "Join Lecture";
             getEl("#requestStatus").click();
         }
         const getEl = (arg)=>{
             return document.querySelector(arg);
         }
 
+        const getQRCode = (el, url)=>{
+            var qrcode = new QRCode(el, {
+                text: url,
+                width: 128,
+                height: 128,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
         window.onload = () => {
          // Set The Preview Image During Image Update Request
                 (()=>{
@@ -131,23 +174,16 @@
                     });
                 })()
 
+                
             getEl('#nameModBtn').addEventListener('click', nameModification)
             getEl('#imgUpdateBtn').addEventListener('click', imageUpdateFunc)
             
             const lecBtns = document.querySelectorAll('.lectBtn');
             lecBtns.forEach(element => {
-            lecBtns.addEventListener('click', event => {
-                joinLecture(event)
-            });
-});
-            var qrcode = new QRCode(document.getElementById("qrcode"), {
-                text: "http://jindo.dev.naver.com/collie",
-                width: 128,
-                height: 128,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-            });
+                element.addEventListener('click', event=>joinLecture(event)
+            );
+        });
+            
   
         }
     </script>

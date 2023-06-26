@@ -56,59 +56,68 @@ namespace StudentID.Controllers
 
 			try
 			{
-				var lecId = Guid.NewGuid();
-				Lectures lec = new Lectures()
+				DateTimeOffset date1 = DateTimeOffset.Parse(DateTime.Now.Date.ToString());
+				DateTimeOffset date2 = DateTimeOffset.Parse(req.LectureDate);
+				int result = date1.CompareTo(date2);
+				if (result <= 0)
 				{
-					Id = lecId,
-					LectureDate = req.LectureDate,
-					WeekNo = req.WeekNo,
-					StartTime = req.StartTime,
-					EndTime = req.EndTime,
-					LecturerId = HttpContext.Session.GetString("IsAuth")
-				};
-				_db.Lectures.Add(lec);
-				_db.SaveChanges();
-
-				string wwwRootPath = _hostEnv.WebRootPath;
-				string path = Path.Combine(wwwRootPath + "/data/lectures.json");
-
-				var lectures = System.IO.File.ReadAllText(path);
-				var data = JsonConvert.DeserializeObject<LectureFile>(lectures);
-				
-				var index = -1;
-				for(int i=0; i<data.Lectures.Count; i++)
-				{
-					if(data.Lectures[i].LecturerId == HttpContext.Session.GetString("IsAuth"))
+					var lecId = Guid.NewGuid();
+					Lectures lec = new Lectures()
 					{
-						index = i;
-						break;
-					}
-				}
-
-				LectureData lect = null;
-				IList<LectureDataModel> lectureDataModels = new List<LectureDataModel> { };
-				if(index == -1)
-				{
-					
-					lectureDataModels.Add(new LectureDataModel() { Id = lecId.ToString(), Students = new List<string> { } });
-					lect = new LectureData()
-					{
-						LecturerId = "baeabf3a-6429-4f32-a624-4bc6b616e7cc",
-						Data = lectureDataModels
+						Id = lecId,
+						LectureDate = req.LectureDate,
+						WeekNo = req.WeekNo,
+						StartTime = req.StartTime,
+						EndTime = req.EndTime,
+						LecturerId = HttpContext.Session.GetString("Id")
 					};
-					data.Lectures.Add(lect);
+					_db.Lectures.Add(lec);
+					_db.SaveChanges();
+
+					string wwwRootPath = _hostEnv.WebRootPath;
+					string path = Path.Combine(wwwRootPath + "/data/lectures.json");
+
+					var lectures = System.IO.File.ReadAllText(path);
+					var data = JsonConvert.DeserializeObject<LectureFile>(lectures);
+
+					var index = -1;
+					for (int i = 0; i < data.Lectures.Count; i++)
+					{
+						if (data.Lectures[i].LecturerId == HttpContext.Session.GetString("Id"))
+						{
+							index = i;
+							break;
+						}
+					}
+
+					LectureData lect;
+					IList<LectureDataModel> lectureDataModels = new List<LectureDataModel> { };
+					if (index == -1)
+					{
+
+						lectureDataModels.Add(new LectureDataModel() { Id = lecId.ToString(), Students = new List<string> { } });
+						lect = new LectureData()
+						{
+							LecturerId = HttpContext.Session.GetString("Id"),
+							Data = lectureDataModels
+						};
+						data.Lectures.Add(lect);
+					}
+					else
+					{
+						data.Lectures[index].Data.Add(new LectureDataModel()
+						{
+							Id = lecId.ToString(),
+							Students = new List<string> { }
+						});
+					}
+					System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
+					return Json(new { status = true, msg = "Lecture Added Successfully!!" });
 				}
 				else
 				{
-					data.Lectures[index].Data.Add(new LectureDataModel()
-					{
-						Id = lecId.ToString(),
-						Students = new List<string> { }
-					});
+					return Json(new { status = false, msg = "Cannot Set Lecture Back In Time" });
 				}
-				System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
-				return Json(new { status = true, msg = "Lecture Added Successfully!!" });
-				//return Json(data);
 			}
 			catch(Exception e)
 			{
@@ -116,6 +125,57 @@ namespace StudentID.Controllers
 
 			}
 
+		}
+
+		public IActionResult AddStudent([FromQuery] string reqHash)
+		{
+			var obj = _db.LectureJoins.SingleOrDefault(l => l.RequestHash == reqHash);
+
+			if(obj == null)
+			{
+				return Json(new { status = false, msg = "Student Request Can Not Be Found" });
+			}
+
+			string wwwRootPath = _hostEnv.WebRootPath;
+			string path = Path.Combine(wwwRootPath + "/data/lectures.json");
+
+			var lectures = System.IO.File.ReadAllText(path);
+			var data = JsonConvert.DeserializeObject<LectureFile>(lectures);
+
+			var index = -1;
+			for (int i = 0; i < data.Lectures.Count; i++)
+			{
+				if (data.Lectures[i].LecturerId == HttpContext.Session.GetString("Id"))
+				{
+					index = i;
+					break;
+				}
+			}
+			int lecIndex = -1;
+			for (int i = 0; i < data.Lectures[index].Data.Count; i++)
+			{
+				if (data.Lectures[index].Data[i].Id == obj.LectureId.ToString())
+				{
+					lecIndex = i;
+					break;
+				}
+			}
+
+			if (lecIndex != -1)
+			{
+				data.Lectures[index].Data[lecIndex].Students.Add(obj.IndexNo);
+				System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
+				_db.LectureJoins.Remove(obj);
+				return Json(new
+				{
+					status = true,
+					msg = "Lecture Joined Successfully!!"
+				});
+			}
+			else
+			{
+				return Json(new { status = false, msg = "Lecture Not Found!!" });
+			}
 		}
 	}
 }

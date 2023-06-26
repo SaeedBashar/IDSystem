@@ -5,7 +5,7 @@
               <h5 class="card-title">Join An OnGoing Lecture</h5>
 
               <div class="accordion accordion-flush" id="faq-group-1">
-
+                  
                   @foreach(var c in Model.courses)
                   {
                 <div class="accordion-item">
@@ -16,7 +16,11 @@
                   </h2>
                   <div id="id-@c.Id" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
                     <div class="accordion-body">
-                        <button class="btn btn-info lectBtn">Join Lecture</button>
+                        <button 
+                            studentNo="@Model.info.IDCard.StudentNo"
+                            indexNo="@Model.info.IDCard.IndexNo" 
+                            courseId="@c.Id" 
+                            class="btn btn-info lectBtn">Join Lecture</button>
                     </div>
                   </div>
                 </div>

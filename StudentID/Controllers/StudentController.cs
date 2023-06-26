@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using StudentID.Data;
 using StudentID.Models;
 using StudentID.Models.Requests;
+using Newtonsoft.Json;
 
 namespace StudentID.Controllers
 {
@@ -87,7 +92,6 @@ namespace StudentID.Controllers
 			return Json(new { status = true, msg = "Name Modification Request Sent Successfully!!" });
 		}
 
-
 		[HttpPost]
 		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ImageUpdate(ImageUpdateRequest req)
@@ -127,9 +131,149 @@ namespace StudentID.Controllers
 		}
 		
 		[HttpPost]
-		public async Task<IActionResult> JoinLecture()
+		public async Task<IActionResult> JoinLecture([FromBody] JoinLectureRequest req)
 		{
-			return View();
+			try
+			{
+
+				var lec = _db.Lecturers.SingleOrDefault(l => l.CourseId == req.CourseId);
+
+				if (lec != null)
+				{
+					List<Lectures> lects = _db.Lectures.Where(l => l.LecturerId == lec.Id.ToString()).ToList();
+
+					if (lects.Count != 0)
+					{
+						var convertedObjects = lects.Select(obj => new
+						{
+							LectureDate = DateTime.Parse(obj.LectureDate),
+							StartTime = TimeSpan.Parse(obj.StartTime),
+							EndTime = TimeSpan.Parse(obj.EndTime),
+							WeekNo = obj.WeekNo,
+							LecturerId = obj.LecturerId,
+							Id = obj.Id
+						});
+						// Sort the converted objects based on the combined date and time value in descending order
+						var sortedObjects = convertedObjects
+							.OrderByDescending(obj => obj.LectureDate.Date)
+							.ThenByDescending(obj=> obj.StartTime);
+
+						// Get the object with the latest date and time (first item after sorting)
+						var latestObject = sortedObjects.FirstOrDefault();
+
+						if (DateTime.Now.TimeOfDay.CompareTo(latestObject.StartTime) < 0)
+						{
+							return Json(new { status = false, msg = "Lecture Has Not Started Yet!!" });
+						}
+						
+						if (DateTime.Now.TimeOfDay.CompareTo(latestObject.EndTime) > 0)
+						{
+							return Json(new { status = false, msg = "Lecture Has Ended Already!!" });
+						}
+
+						var obj = _db.LectureJoins.SingleOrDefault(l =>
+							l.StudentNo == req.StudentNo &&
+							l.IndexNo == req.IndexNo
+						);
+
+						string reqHash;
+						if(obj == null)
+						{
+							using (SHA256 sha256 = SHA256.Create())
+							{
+								byte[] inputBytes = Encoding.UTF8.GetBytes(
+									req.IndexNo + req.StudentNo + 
+									latestObject.Id + DateTime.Now.ToString());
+
+								byte[] hashBytes = sha256.ComputeHash(inputBytes);
+								string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+								reqHash = hash;
+							}
+
+							_db.LectureJoins.Add(new LectureJoin()
+							{
+								LectureId = latestObject.Id,
+								StudentNo = req.StudentNo,
+								IndexNo = req.IndexNo,
+								RequestHash = reqHash
+							});
+							_db.SaveChanges();
+							return Json(new { status = true, requestHash = reqHash });
+						}
+						else
+						{
+							return Json(new { status = false, msg = "User Has Already Joined Lecture" });
+						}
+
+						//if (DateTime.Now.TimeOfDay < latestObject.StartTime)
+						//{
+						//	return Json(new { status = false, msg = "Lectures Has Not Started Yet!!" });
+						//}
+						//if (DateTime.Now.TimeOfDay > latestObject.EndTime)
+						//{
+						//	return Json(new { status = false, msg = "Lectures Has Ended Already!!" });
+						//}
+						//if (latestObject.StartTime < DateTime.Now.TimeOfDay && latestObject.EndTime > DateTime.Now.TimeOfDay)
+						//{
+						//	string wwwRootPath = _hostEnv.WebRootPath;
+						//	string path = Path.Combine(wwwRootPath + "/data/lectures.json");
+
+						//	var lectures = System.IO.File.ReadAllText(path);
+						//	var data = JsonConvert.DeserializeObject<LectureFile>(lectures);
+
+						//	var index = -1;
+						//	for (int i = 0; i < data.Lectures.Count; i++)
+						//	{
+						//		if (data.Lectures[i].LecturerId == lec.Id.ToString())
+						//		{
+						//			index = i;
+						//			break;
+						//		}
+						//	}
+						//	int lecIndex = -1;
+						//	for (int i = 0; i < data.Lectures[index].Data.Count; i++)
+						//	{
+						//		if (data.Lectures[index].Data[i].Id == latestObject.Id.ToString())
+						//		{
+						//			lecIndex = i;
+						//			break;
+						//		}
+						//	}
+						//	if (lecIndex != -1)
+						//	{
+						//		//TODO:Re-Implement Logic
+						//		data.Lectures[index].Data[lecIndex].Students.Add(req.IndexNo);
+						//		System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
+						//		return Json(new
+						//		{
+						//			status = true,
+						//			msg = "Lectures Joined Successfully!!",
+						//			lectureId = latestObject.Id
+						//		});
+						//	}
+						//	else
+						//	{
+						//		return Json(new { status = false, msg = "Lectures Not Found!!" });
+						//	}
+						//}
+
+					}
+					else
+					{
+						return Json(new { status = false, msg = "No Lecture Available For This Lecturer" });
+					}
+				}
+				else
+				{
+					return Json(new { status = false, msg = "Error No Lecturer Available" });
+				}
+			}
+			catch (Exception e)
+			{
+				return Json(new { status = false, msg = "Unexpected Error Occured!!" });
+			}
+
+			return Json(req);
 		}
 	}
 }

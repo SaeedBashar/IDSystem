@@ -20,7 +20,7 @@
                     </div>
 
                     </div>*@
-
+                    
                 <div class="col-xl-8 offset-xl-2">
                     <div class="card">
                         <div class="card-body pt-3">
@@ -55,7 +55,7 @@
         </div>
     </div>
 </section>
-
+<partial name="_status"/>
 @section Scripts{
 <script>
             const startLecture = async ()=>{
@@ -77,7 +77,8 @@
                 if(data.status){
                      let lecBody = getEl("#lectureBody")
                      let tr = document.createElement('tr');
-    let wn = document.createElement('td');
+    
+                     let wn = document.createElement('td');
     let wnt = document.createTextNode(WeekNo)
     wn.appendChild(wnt)
 
@@ -111,8 +112,56 @@
                 return document.querySelector(arg);
             }
 
+            const startCamera = ()=>{
+                // Access the camera stream
+
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(function(stream) {
+    // Get the video element
+    var videoElement = document.getElementById("videoElement");
+
+    // Set the video stream as the source for the video element
+    videoElement.srcObject = stream;
+
+    // Create a ZXing barcode reader
+    var codeReader = new ZXing.BrowserBarcodeReader();
+
+    // Start decoding the video stream
+    codeReader.decodeFromVideoElement(videoElement, function(result, error) {
+      if (result) {
+        // QR code detected, do something with the result
+        console.log("QR code detected: " + result.text);
+        document.click()
+      } else if (error) {
+        // Error occurred while decoding
+        console.log("Error decoding QR code: " + error);
+      }
+    });
+  })
+  .catch(function(error) {
+    console.log("Error accessing camera: " + error);
+  });
+
+            }
+
+            const addStudent = ()=>{
+                //<video id="videoElement" width="400" height="300"></video>
+                let vid = document.createElement("video")
+                vid.id = "videoElement";
+                vid.width = "400"
+                vid.height = "300"
+
+                getEl("#requestMsg").appendChild(vid);
+
+                startCamera()
+                getEl("#statusTitle").innerText = "Add Student To Current Lecture";
+                getEl("#requestStatus").click();
+
+            }
+
             window.onload = ()=>{
                 getEl("#initLecture").addEventListener('click', startLecture);
+                getEl("#addStudentToLecture").addEventListener('click', addStudent)
             }
 </script>
 }

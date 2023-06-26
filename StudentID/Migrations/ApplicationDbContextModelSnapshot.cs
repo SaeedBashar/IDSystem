@@ -135,6 +135,27 @@ namespace StudentID.Migrations
                     b.ToTable("ImageUpdates");
                 });
 
+            modelBuilder.Entity("StudentID.Models.LectureJoin", b =>
+                {
+                    b.Property<string>("StudentNo")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IndexNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("LectureId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RequestHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StudentNo");
+
+                    b.ToTable("LectureJoins");
+                });
+
             modelBuilder.Entity("StudentID.Models.Lecturer", b =>
                 {
                     b.Property<Guid>("Id")
