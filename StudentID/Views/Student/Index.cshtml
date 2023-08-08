@@ -85,7 +85,7 @@
         const getStudentInfo = async ()=>{
             let res = await fetch("/student/StudentInfoApi");
             let data = await res.json();
-            console.log(data)
+          
 
             studentNo = data.idCard.studentNo;
             indexNo = data.idCard.indexNo;
@@ -116,7 +116,7 @@
         const getCourses = async ()=>{
             let res = await fetch("/student/CoursesApi");
             let data = await res.json();
-            console.log(data)
+            
 
             getEl("#faq-group-1").innerHTML = "";
             if(data.length > 0){
@@ -187,7 +187,7 @@
                 body: JSON.stringify({courseId, studentNo, indexNo })
             })
             const data = await res.json();
-            console.log(data)
+            
             if(data.status){
                var qrCont = document.createElement("div");
                qrCont.id = "qrcode";
@@ -278,7 +278,7 @@
                     </li>
             `;
             }
-            console.log("from notify", data)
+            
         }
         
         const setConfirmNotifications = async ()=>{

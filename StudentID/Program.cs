@@ -14,6 +14,7 @@ builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", opt
 {
 	options.Cookie.Name = "MyCookieAuth";
 	options.LoginPath = "/Auth/SignIn";
+	options.ExpireTimeSpan = TimeSpan.FromMinutes(120);
 });
 
 builder.Services.AddSession(options =>
