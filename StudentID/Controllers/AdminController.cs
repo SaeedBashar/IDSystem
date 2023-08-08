@@ -2,6 +2,7 @@
 using StudentID.Data;
 using StudentID.Models;
 using StudentID.Models.Requests;
+using StudentID.Services;
 using System.IO;
 
 namespace StudentID.Controllers
@@ -10,49 +11,63 @@ namespace StudentID.Controllers
 	{
 		private readonly ApplicationDbContext _db;
 		private readonly IWebHostEnvironment _hostEnv;
+		private AdminServices _service;
 
 		public AdminController(ApplicationDbContext db, IWebHostEnvironment hostEnv)
 		{
-			this._db = db;
-			this._hostEnv = hostEnv;
+			_db = db;
+			_hostEnv = hostEnv;
+			_service = new AdminServices(_db);
 		}
 		public IActionResult Index()
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return RedirectToAction("SignIn", "Auth");
 			}
 
+			string aid = HttpContext.Session.GetString("Id");
+			if(aid != null)
+			{
+				ViewData["LastName"] = HttpContext.Session.GetString("LastName");
+				ViewData["OtherNames"] = HttpContext.Session.GetString("OtherNames");
+				
+				var counts = _service.GetCounts();
+				var viewState = new
+				{
+					nameModifications = _service.NameModifications(),
+					imageUpdates = _service.ImageUpdates(),
+					students = _service.Students(),
+					issuedCardCount = counts.issuedCardCount,
+					nameModifyCount = counts.nameModifyCount,
+					imageUpdateCount = counts.imageUpdateCount
+				};
+
+				return View(viewState);
+			}
+
+			return RedirectToAction("SignIn", "Auth");
+		}
+
+
+		public IActionResult getStudentDetails(Guid id)
+		{
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
+			{
+				return Json(new { status = false, msg = "Authenticated Failed!!" });
+			}
+
 			var query = from s in _db.Students
 						join c in _db.IDCards on s.Id equals c.StudentId
-						join n in _db.NameModificationDocuments on s.Id equals n.StudentId into stud_mod
-						from st in stud_mod.DefaultIfEmpty()
-						where st != null
-						select new { Student = s, IDCard = c, MStud = st };
+						where s.Id == id
+						select new { student = s, card = c };
 
-			var query1 = from s in _db.Students
-						 join i in _db.ImageUpdates on s.Id equals i.StudentId into stud_mod
-						 from st in stud_mod.DefaultIfEmpty()
-						 where st != null
-						 select new { 
-							 currentImg=s.ImageUrl, 
-							 newImg=st.FileName, 
-							 requestId=st.Id, 
-							 studentId=st.StudentId
-						 };
-
-			var viewState = new
-			{
-				nameModifications = query.ToList(),
-				imageUpdates = query1.ToList()
-			};
-
-			return View(viewState);
+			return Json(query);
 		}
 
 		public IActionResult GetNameModificationDetail(Guid Id)
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return Json(new { status = false, msg = "Authenticated Failed!!" });
 			}
@@ -70,7 +85,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ApproveNameModificationRequest([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return Json(new { status = false, msg = "Authenticated Failed!!" });
 			}
@@ -83,6 +98,9 @@ namespace StudentID.Controllers
 						x => x.Id == Guid.Parse(reqBody.RequestId) &&
 							 x.StudentId == Guid.Parse(reqBody.StudentId)
 					);
+				var nmNotify = _db.NmNotifies.FirstOrDefault(x =>
+					x.StudentId == reqBody.StudentId &&
+					x.RequestId == reqBody.RequestId);
 
 				if (student == null || nModify == null)
 				{
@@ -107,6 +125,14 @@ namespace StudentID.Controllers
 					return Json(new { status = false, msg = "Error Deleting File!!" });
 				}
 				_db.NameModificationDocuments.Remove(nModify);
+				_db.NmNotifyConfirms.Add(new NmNotifyConfirm()
+				{
+					Status = "Approved",
+					StudentId = nmNotify.StudentId,
+					RequestId = nmNotify.RequestId
+				});
+				_db.NmNotifies.Remove(nmNotify);
+
 
 				await _db.SaveChangesAsync();
 
@@ -122,7 +148,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> RejectNameModificationRequest([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return Json(new { status = false, msg = "Authenticated Failed!!" });
 			}
@@ -134,6 +160,9 @@ namespace StudentID.Controllers
 						x => x.Id == Guid.Parse(reqBody.RequestId) &&
 							 x.StudentId == Guid.Parse(reqBody.StudentId)
 					);
+				var nmNotify = _db.NmNotifies.FirstOrDefault(x =>
+					x.StudentId == reqBody.StudentId &&
+					x.RequestId == reqBody.RequestId);
 
 				if (nModify == null)
 				{
@@ -155,7 +184,13 @@ namespace StudentID.Controllers
 					return Json(new { status = false, msg = "Error Deleting File!!" });
 				}
 				_db.NameModificationDocuments.Remove(nModify);
-
+				_db.NmNotifyConfirms.Add(new NmNotifyConfirm()
+				{
+					Status = "Rejected",
+					StudentId = nmNotify.StudentId,
+					RequestId = nmNotify.RequestId
+				});
+				_db.NmNotifies.Remove(nmNotify);
 				await _db.SaveChangesAsync();
 
 				return Json(new { status = true, msg = "Name Modification Rejected Successfully!!" });
@@ -170,7 +205,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ApproveImageUpdate([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return Json(new { status = false, msg = "Authenticated Failed!!" });
 			}
@@ -183,6 +218,9 @@ namespace StudentID.Controllers
 						x => x.Id == Guid.Parse(reqBody.RequestId) &&
 							 x.StudentId == Guid.Parse(reqBody.StudentId)
 					);
+				var iuNotify = _db.IuNotifies.FirstOrDefault(x =>
+					x.StudentId == reqBody.StudentId &&
+					x.RequestId == reqBody.RequestId);
 
 				if (student == null || nModify == null)
 				{
@@ -201,6 +239,13 @@ namespace StudentID.Controllers
 					System.IO.File.Move(newPath, Path.Combine(wwwRootPath + "/image/approved", nModify.FileName));
 					student.ImageUrl = nModify.FileName;
 					_db.ImageUpdates.Remove(nModify);
+					_db.IuNotifyConfirms.Add(new IuNotifyConfirm()
+					{
+						Status = "Approved",
+						StudentId = iuNotify.StudentId,
+						RequestId = iuNotify.RequestId
+					});
+					_db.IuNotifies.Remove(iuNotify);
 					await _db.SaveChangesAsync();
 					Console.WriteLine("File removed successfully");
 				}
@@ -221,7 +266,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> RejectImageUpdate([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetString("IsAuth") == "false")
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
 			{
 				return Json(new { status = false, msg = "Authenticated Failed!!" });
 			}
@@ -234,6 +279,9 @@ namespace StudentID.Controllers
 						x => x.Id == Guid.Parse(reqBody.RequestId) &&
 							 x.StudentId == Guid.Parse(reqBody.StudentId)
 					);
+				var iuNotify = _db.IuNotifies.FirstOrDefault(x =>
+					x.StudentId == reqBody.StudentId &&
+					x.RequestId == reqBody.RequestId);
 
 				if (student == null || nModify == null)
 				{
@@ -251,6 +299,13 @@ namespace StudentID.Controllers
 					System.IO.File.Delete(newPath);
 					// System.IO.File.Move(newPath, Path.Combine(wwwRootPath + "/image/approved", nModify.FileName));
 					_db.ImageUpdates.Remove(nModify);
+					_db.IuNotifyConfirms.Add(new IuNotifyConfirm()
+					{
+						Status = "Rejected",
+						StudentId = iuNotify.StudentId,
+						RequestId = iuNotify.RequestId
+					});
+					_db.IuNotifies.Remove(iuNotify);
 					await _db.SaveChangesAsync();
 					Console.WriteLine("File removed successfully");
 				}
@@ -266,6 +321,65 @@ namespace StudentID.Controllers
 				return Json(new { status = false, msg = "Unexpected Error!!" });
 			}
 
+		}
+		
+		public IActionResult ChangeCardStatus([FromBody] CardStatusRequest body)
+		{
+
+			if (HttpContext.Session.GetInt32("IsAuth") == 0)
+			{
+				return Json(new { status = false, msg = "Authenticated Failed!!" });
+			}
+
+			var studentCard = _db.IDCards.SingleOrDefault(s => s.StudentId == body.StudentId);
+
+			if(studentCard != null)
+			{
+
+				if(body.cardStatus && studentCard.IsActive)
+				{
+					return Json(new {status = true, msg = "Student Card Is Already Activated!"});
+
+				}
+
+				if(!body.cardStatus && !studentCard.IsActive)
+				{
+					return Json(new { status = true, msg = "Student Card Is Already Deactivated!" });
+
+				}
+
+				studentCard.IsActive = body.cardStatus;
+				_db.SaveChanges();
+				return Json(new { status = true, msg = "Student Card Updated Successfully!" });
+			}
+			else
+			{
+				return Json(new { status = false, msg = "Student Card Not Found!" });
+			}
+		}
+
+		public IActionResult CountsApi()
+		{
+			var obj = _service.GetCounts();
+			return Json(obj);
+		}
+
+		public IActionResult NameModificationsApi()
+		{
+			var obj = _service.NameModifications();
+			return Json(obj);
+		}
+
+		public IActionResult ImageUpdatesApi()
+		{
+			var obj = _service.ImageUpdates();
+			return Json(obj);
+		}
+
+		public IActionResult StudentsApi()
+		{
+			var obj = _service.Students();
+			return Json(obj);
 		}
 	}
 }

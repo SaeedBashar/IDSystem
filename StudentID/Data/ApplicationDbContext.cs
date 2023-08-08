@@ -31,5 +31,10 @@ namespace StudentID.Data
 		public DbSet<Course> Courses { get; set; }
 
 		public DbSet<LectureJoin> LectureJoins { get; set; }
+
+		public DbSet<NmNotify> NmNotifies { get; set; }
+		public DbSet<NmNotifyConfirm> NmNotifyConfirms { get; set; }
+		public DbSet<IuNotify> IuNotifies { get; set; }
+		public DbSet<IuNotifyConfirm> IuNotifyConfirms { get; set; }
 	}
 }

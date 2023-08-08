@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ls2aDo0YAtwsNx27JEE//4sbeDq3t5xzoOyszd+DJTQ=",
+  "Hash": "dqo68Be4weILRyrdPslTWPszOB8toYUW6wB3Php1U2g=",
   "Source": "StudentID",
   "BasePath": "_content/StudentID",
   "Mode": "Default",
@@ -5865,12 +5865,12 @@
       "OriginalItemSpec": "wwwroot\\favicon.ico"
     },
     {
-      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg",
+      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\27b4c502-ad07-401c-a484-db44e19fcc9d-pic5.jpeg",
       "SourceId": "StudentID",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
       "BasePath": "_content/StudentID",
-      "RelativePath": "Image/approved/8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg",
+      "RelativePath": "Image/approved/27b4c502-ad07-401c-a484-db44e19fcc9d-pic5.jpeg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -5879,7 +5879,41 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Image\\approved\\8c0fa6d6-c55e-46d1-8743-3192f9dc4012-pic3.jpeg"
+      "OriginalItemSpec": "wwwroot\\Image\\approved\\27b4c502-ad07-401c-a484-db44e19fcc9d-pic5.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\492a5d92-55b6-4178-b859-02ef6458f52a-pic2.jpeg",
+      "SourceId": "StudentID",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
+      "BasePath": "_content/StudentID",
+      "RelativePath": "Image/approved/492a5d92-55b6-4178-b859-02ef6458f52a-pic2.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Image\\approved\\492a5d92-55b6-4178-b859-02ef6458f52a-pic2.jpeg"
+    },
+    {
+      "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\60cb5552-a74a-4f55-a7f5-e109015bd92b-pic1.jpeg",
+      "SourceId": "StudentID",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\",
+      "BasePath": "_content/StudentID",
+      "RelativePath": "Image/approved/60cb5552-a74a-4f55-a7f5-e109015bd92b-pic1.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Image\\approved\\60cb5552-a74a-4f55-a7f5-e109015bd92b-pic1.jpeg"
     },
     {
       "Identity": "C:\\Users\\Bashar\\Desktop\\Bash\\C#\\IDSystem\\StudentID\\wwwroot\\Image\\approved\\avatar1.png",

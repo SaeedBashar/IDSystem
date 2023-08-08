@@ -14,7 +14,11 @@ namespace StudentID.Models
 		[Required]
 		public string IndexNo { get; set; }
 
+		[Required]
+		public bool IsActive { get; set; }
+
 		[ForeignKey("Student")]
 		public Guid StudentId { get; set; }
+
 	}
 }

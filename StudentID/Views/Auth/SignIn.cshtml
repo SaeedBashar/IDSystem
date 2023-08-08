@@ -18,7 +18,20 @@
                   <span class="d-none d-lg-block">Student ID</span>
                 </a>
               </div>
-
+              @if(@ViewData["cardStatus"] != null)
+              {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  @ViewData["cardStatus"]
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              }
+              @if(@ViewData["Authentication"] != null)
+              {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  @ViewData["Authentication"]
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              }
               <div class="card mb-3">
 
                 <div class="card-body">
@@ -28,7 +41,7 @@
                     <p class="text-center small">Enter Your Credentials To Login</p>
                   </div>
 
-                  <form asp-controller="Auth" asp-action="SignIn" method="POST" class="row g-3 needs-validation" novalidate>
+                  <form id="sign-in" asp-controller="Auth" asp-action="SignIn" method="POST" class="row g-3 needs-validation" novalidate>
                     <div class="col-12">
                         <label class="form-label">User Role</label>
                         <select name="UserRole" id="UserRole" class="form-select" aria-label="Default select example">
@@ -80,6 +93,19 @@
 
     @section Scripts{
         <script>
+
+            //const async signIn = ()=>{
+            //    const form = getEl("sign-in")
+
+            //    const formData = new FormData(form)
+            //    const res = await fetch("/auth/signin", {
+            //        method: "POST",
+            //        body: formData
+            //    })
+            //    console.log(res)
+            //    const data = await res.json()
+            //    console.log(data)
+            //}
 
             const adjustScreen = e=>{
                 const role = e.target.value;

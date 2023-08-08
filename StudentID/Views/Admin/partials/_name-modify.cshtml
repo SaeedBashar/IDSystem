@@ -5,7 +5,7 @@
 
                 <div class="card-body pb-0">
 
-                    <table class="table table-borderless">
+                    <table class="table table-borderless datatable">
                         <thead>
                             <tr>
                                 <th scope="col">Student No</th>
@@ -44,11 +44,11 @@
     </div>
 </div>
 
-<button id="nameModifyDetail" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#ExtralargeModal">
+<button id="nameModifyDetail" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#nameModifyModal">
     Extra Large Modal
 </button>
 
-<div class="modal fade" id="ExtralargeModal" tabindex="-1">
+<div class="modal fade" id="nameModifyModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -74,7 +74,7 @@
                         <div class="card">
                     <div class="card-body">
                         
-                        <form id="detailForm" class="row g-3">
+                        <form id="modDetailForm" class="row g-3">
                             <div class="col-md-6">
                                 <label for="inputName5" class="form-label">Last Name</label>
                                 <input type="text" disabled class="form-control" id="lastName">
@@ -127,6 +127,3 @@
         </div>
     </div>
 </div>
-
-
-<partial name="_Status"/>

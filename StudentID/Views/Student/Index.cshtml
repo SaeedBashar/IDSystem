@@ -3,10 +3,18 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    ViewData["Title"] = "Student Home";
+    ViewData["Title"] = "Student";
 }
 
+
 <section class="section profile">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <div class="pagetitle">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-8 offset-sm-2">
 
@@ -16,7 +24,7 @@
                     <div class="card">
                         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                            <img src="image/approved/@Model.info.Student.ImageUrl" alt="Profile" class="rounded-circle">
+                            <img id="imgLeft" src="image/approved/@Model.info.Student.ImageUrl" alt="Profile" class="rounded-circle">
                         </div>
                     </div>
 
@@ -30,23 +38,21 @@
                             <ul class="nav nav-tabs nav-tabs-bordered">
 
                                 <li class="nav-item">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                                    <button id="OCallInfo" class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                                    <button id="ECallInfo" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Card Info</button>
+                                    <button id="CCallInfo" class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Card Info</button>
                                 </li>
 
                                 <li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#lectures">Lectures</button>
+                                    <button id="LCallInfo" class="nav-link" data-bs-toggle="tab" data-bs-target="#lectures">Lectures</button>
                                 </li>
-                                @*<li class="nav-item">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
-                            </li>*@
+                                
                             </ul>
                             
                             <div class="tab-content pt-2">
@@ -73,6 +79,72 @@
 
 @section Scripts {
     <script>
+        var studentNo;
+        var indexNo;
+
+        const getStudentInfo = async ()=>{
+            let res = await fetch("/student/StudentInfoApi");
+            let data = await res.json();
+            console.log(data)
+
+            studentNo = data.idCard.studentNo;
+            indexNo = data.idCard.indexNo;
+
+            getEl("#imgLeft").setAttribute('src',"image/approved/" + data.student.imageUrl);
+            getEl("#modalLeftImg").setAttribute('src',"image/approved/" + data.student.imageUrl);
+            getEl("#imgRequest").setAttribute('src',"image/approved/" + data.student.imageUrl);
+            getEl("#idSvgImg").setAttribute('src',"image/approved/" + data.student.imageUrl);
+
+            var lname = data.student.lastName;
+            var oname = data.student.otherNames;
+            getEl("#detailName").innerText = getEl("#editStdName").innerText = getEl("#navName").innerText = lname + " " + oname;
+
+            getEl("#reqLastName").value = getEl("#s-lastName").textContent = lname;
+            getEl("#reqOtherNames").value = getEl("#s-otherName").textContent = oname;
+            
+            getEl("#detailStdNo").innerText = data.idCard.studentNo;
+            getEl("#detailIndexNo").innerText = data.idCard.indexNo;
+            getEl("#detailProgram").innerText = data.program.programName;
+            getEl("#detailFaculty").innerText = data.student.faculty;
+            getEl("#detailCollege").innerText = data.student.college;
+            getEl("#detailPhone").innerText = data.student.phone;
+            getEl("#detailEmail").innerText = data.student.email;
+
+            setNotifications()
+        }
+
+        const getCourses = async ()=>{
+            let res = await fetch("/student/CoursesApi");
+            let data = await res.json();
+            console.log(data)
+
+            getEl("#faq-group-1").innerHTML = "";
+            if(data.length > 0){
+                for(let i=0; i<data.length; i++){
+                    getEl("#faq-group-1").innerHTML += `
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" data-bs-target="#id-${data[i].id}" type="button" data-bs-toggle="collapse">
+                                ${data[i].courseName} - ${data[i].courseCode}
+                            </button>
+                            </h2>
+                            <div id="id-${data[i].id}" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+                            <div class="accordion-body">
+                                <button 
+                                    studentNo="${studentNo}"
+                                    indexNo="${indexNo}" 
+                                    courseId="${data[i].id}" 
+                                    class="btn btn-info lectBtn">Join Lecture</button>
+                            </div>
+                            </div>
+                        </div>
+                    `
+                }
+            }else{
+                getEl("#faq-group-1").innerHTML = "<h3 style='text-align: center'>No Lectures Available</h3>"
+            }
+        }
+
         const imageUpdateFunc = async ()=>{
             var form = getEl("#imgUpdate");
 
@@ -82,12 +154,11 @@
                 method: "POST",
                 body: formData
             })
-            console.log(res)
             const data = await res.json()
-            console.log(data)
             getEl("#requestMsg").innerText = data.msg
             getEl("#requestStatus").click();
         }
+        
         const nameModification = async ()=>{
             var form = getEl("#nameMod");
 
@@ -97,11 +168,11 @@
                 method: "POST",
                 body: formData
             })
-            console.log(res)
             const data = await res.json()
             getEl("#requestMsg").innerText = data.msg
             getEl("#requestStatus").click();
         }
+        
         const joinLecture = async (ev)=>{
 
             const courseId = ev.target.getAttribute('courseId')
@@ -139,6 +210,112 @@
              getEl("#statusTitle").innerText = "Join Lecture";
             getEl("#requestStatus").click();
         }
+
+        const setNotifications = async ()=>{
+            let res = await fetch("/student/NotificationsApi");
+            let data = await res.json();
+
+            getEl("#notifyBadge").innerText = data.nm.length + data.iu.length + data.cnm.length + data.ciu.length;
+
+            let notify = "";
+            for(let i of data.nm){
+                notify += `
+                    <li class="notification-item">
+                        <i class="bi ${i.status == 'Pending' ? 'bi-info-circle text-primary' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Reqeuest To Change Name To ${i.name}</p>
+                            <span class="badge rounded-pill ${i.status == 'Pending' ? 'bg-primary' : 'bg-success' }">${i.status}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                `
+            }
+
+            for(let i of data.cnm)
+            {
+                 notify += `
+                    <li class="notification-item">
+                        <i class="bi ${i.status == 'Rejected' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Reqeuest To Change Name Has Been <span class="badge rounded-pill ${i.status == 'Rejected' ? 'bg-danger' : 'bg-success' }">${i.status}</span></p>
+                            
+                        </div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                `
+            }
+
+            getEl('#notifyDown').firstElementChild.innerHTML = notify;
+            for(let i of data.iu)
+            {
+            getEl('#notifyDown').lastElementChild.innerHTML = `
+                <li class="notification-item">
+                        <i class="bi ${i.status == 'Pending' ? 'bi-info-circle text-primary' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Reqeuest To Change ID Card Image</p>
+                            <span class="badge rounded-pill ${i.status == 'Pending' ? 'bg-primary' : 'bg-success' }">${i.status}</span>
+                        </div>
+                    </li>
+            `;
+            }
+
+            for(let i of data.ciu)
+            {
+            getEl('#notifyDown').lastElementChild.innerHTML = `
+                <li class="notification-item">
+                        <i class="bi ${i.status == 'Rejected' ? 'bi-x-circle text-danger' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Request To Change ID Card Image Has Been <span class="badge rounded-pill ${i.status == 'Rejected' ? 'bg-danger' : 'bg-success' }">${i.status}</span></p>
+                            
+                        </div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+            `;
+            }
+            console.log("from notify", data)
+        }
+        
+        const setConfirmNotifications = async ()=>{
+            let res = await fetch("/student/NotificationConfirmsApi");
+            let data = await res.json();
+            getEl("#notifyBadge").innerText = data.nm.length + data.iu.length;
+
+            let notify = "";
+            for(let i of data.nm){
+                notify += `
+                    <li class="notification-item">
+                        <i class="bi ${i.status == 'Pending' ? 'bi-info-circle text-primary' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Reqeuest To Change Name To ${i.name}</p>
+                            <span class="badge rounded-pill ${i.status == 'Pending' ? 'bg-primary' : 'bg-success' }">${i.status}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                `
+            }
+            getEl('#notifyDown').firstElementChild.innerHTML = notify;
+            if(data.iu.length > 0)
+            {
+            getEl('#notifyDown').lastElementChild.innerHTML = `
+                <li class="notification-item">
+                        <i class="bi ${data.iu[0].status == 'Pending' ? 'bi-info-circle text-primary' : 'bi-check-circle text-success' }"></i>
+                        <div>
+                            <p>Reqeuest To Change ID Card Image</p>
+                            <span class="badge rounded-pill ${data.iu[0].status == 'Pending' ? 'bg-primary' : 'bg-success' }">${data.iu[0].status}</span>
+                        </div>
+                    </li>
+            `;
+            }
+        }
+
         const getEl = (arg)=>{
             return document.querySelector(arg);
         }
@@ -153,14 +330,15 @@
                 correctLevel : QRCode.CorrectLevel.H
             });
         }
+        
         window.onload = () => {
-         // Set The Preview Image During Image Update Request
+            // Set The Preview Image During Image Update Request
                 (()=>{
                     const fileInput = document.querySelector('.new-img');
                     const previewImage = document.getElementById('previewImg');
 
                     fileInput.addEventListener('change', function (event) {
-                     const file = event.target.files[0];
+                    const file = event.target.files[0];
 
                         if (file) {
                             const reader = new FileReader();
@@ -174,17 +352,23 @@
                     });
                 })()
 
+                    
+                getEl('#nameModBtn').addEventListener('click', nameModification)
+                getEl('#imgUpdateBtn').addEventListener('click', imageUpdateFunc)
                 
-            getEl('#nameModBtn').addEventListener('click', nameModification)
-            getEl('#imgUpdateBtn').addEventListener('click', imageUpdateFunc)
-            
-            const lecBtns = document.querySelectorAll('.lectBtn');
-            lecBtns.forEach(element => {
-                element.addEventListener('click', event=>joinLecture(event)
-            );
-        });
-            
-  
+                getEl('#OCallInfo').addEventListener('click', getStudentInfo);
+                getEl('#ECallInfo').addEventListener('click', getStudentInfo);
+                getEl('#CCallInfo').addEventListener('click', getStudentInfo);
+                getEl('#LCallInfo').addEventListener('click', getCourses);
+
+                const lecBtns = document.querySelectorAll('.lectBtn');
+                lecBtns.forEach(element => {
+                    element.addEventListener('click', event=>joinLecture(event));
+                });
+
+                setInterval(setNotifications, 5000);
+                //setNotifications();
+                //setConfirmNotifications();
         }
     </script>
 }

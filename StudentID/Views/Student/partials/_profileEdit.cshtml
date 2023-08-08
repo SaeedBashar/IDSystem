@@ -4,7 +4,7 @@
             <label for="profileImage"
                    class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
             <div class="col-md-8 col-lg-9">
-                <img src="image/approved/@Model.info.Student.ImageUrl" alt="Profile">
+                <img id="imgRequest" src="image/approved/@Model.info.Student.ImageUrl" alt="Profile">
                 <div class="pt-2">
                     <button type="button" title="Upload new ID image" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#largeModal">
                         Request Image
@@ -17,7 +17,7 @@
         <div class="row mb-3">
             <div class="col-lg-3 col-md-4 col-form-label ">Full Name</div>
             <div class="col-lg-9 col-md-8">
-                @Model.info.Student.LastName @Model.info.Student.OtherNames
+                <p id="editStdName">@Model.info.Student.LastName @Model.info.Student.OtherNames</p>
                 <div class="pt-2">
                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#smallModal">
                         Request Name Modification
@@ -37,7 +37,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-lg-4">
-                        <img style="display:inline-block; max-width: 120px" src="image/approved/@Model.info.Student.ImageUrl"/>
+                        <img id="modalLeftImg" style="display:inline-block; max-width: 120px" src="image/approved/@Model.info.Student.ImageUrl"/>
                     </div>
                     <div class="col-lg-4">
                         <form id="imgUpdate" class="row g-3" enctype="multipart/form-data">
@@ -77,11 +77,11 @@
                         @*<form id="nameMod" asp-action="ModifyName" method="POST" class="row g-3" enctype="multipart/form-data">*@
                             <div class="col-12">
                                 <label for="OLastName" class="form-label">Last Name(Current)</label>
-                                <input type="text" class="form-control" disabled value="@Model.info.Student.LastName">
+                                <input id="reqLastName" type="text" class="form-control" disabled value="@Model.info.Student.LastName">
                             </div>
                             <div class="col-12">
                                 <label for="OOtherNames" class="form-label">Other Names(Current)</label>
-                                <input type="text" class="form-control" disabled value="@Model.info.Student.OtherNames">
+                                <input id="reqOtherNames" type="text" class="form-control" disabled value="@Model.info.Student.OtherNames">
                             </div>
                             <br /><hr />
                             <div class="col-12">

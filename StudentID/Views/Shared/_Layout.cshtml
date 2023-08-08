@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - StudentID</title>
+    <title>@ViewData["Title"]</title>
 
     <link href="~/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~/assets/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="~/assets/css/style.css" rel="stylesheet">
 
 @*    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -29,11 +30,12 @@
         </div>
     </footer>
     <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="~/assets/js/main.js"></script>
+    <script src="~/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    @*<script src="~/assets/js/main.js"></script>*@
     <script src="~/qr/qrcode.js"></script>
-    <script src="~/scan-library/umd/index.min.js"></script>
-    <script src="~/scan-browser/umd/zxing-browser.min.js"></script>
-
+   @* <script src="~/scan-library/umd/index.min.js"></script>
+    <script src="~/scan-browser/umd/zxing-browser.min.js"></script>*@
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <!-- <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> -->
     <script src="~/js/site.js" asp-append-version="true"></script>

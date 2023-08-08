@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 using StudentID.Models.Requests;
 using StudentID.Data;
+using System.Text;
 
 namespace StudentID.Controllers
 {
@@ -22,6 +24,14 @@ namespace StudentID.Controllers
 		{
 			var email = credentials.Email;
 			var pword = credentials.Password;
+			using (SHA256 sha256 = SHA256.Create())
+			{
+				byte[] inputBytes = Encoding.UTF8.GetBytes(credentials.Password);
+
+				byte[] hashBytes = sha256.ComputeHash(inputBytes);
+				string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+				pword = hash;
+			}
 			if (credentials.UserRole == "admin")
 			{
 
@@ -30,7 +40,7 @@ namespace StudentID.Controllers
 				{
 					HttpContext.Session.SetString("LastName", admin.LastName);
 					HttpContext.Session.SetString("OtherNames", admin.OtherNames);
-					HttpContext.Session.SetString("IsAuth", "true");
+					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", admin.Id.ToString());
 
 					return RedirectToAction("Index", "Admin");
@@ -46,7 +56,7 @@ namespace StudentID.Controllers
 				{
 					HttpContext.Session.SetString("LastName", lecturer.LastName);
 					HttpContext.Session.SetString("OtherNames", lecturer.OtherNames);
-					HttpContext.Session.SetString("IsAuth", "true");
+					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", lecturer.Id.ToString());
 
 					return RedirectToAction("Index", "Lecturer");
@@ -57,15 +67,20 @@ namespace StudentID.Controllers
 			{
 				var query = (from s in _db.Students
 							 join c in _db.IDCards on s.Id equals c.StudentId
-							 where s.Password == credentials.Password && c.StudentNo == credentials.StudentNumber
-							 select new { Student = s })
+							 where s.Password == pword && c.StudentNo == credentials.StudentNumber
+							 select new { Student = s, isActive = c.IsActive })
 						.SingleOrDefault();
 
 				if (query != null)
 				{
+					if(!query.isActive)
+					{
+						ViewData["cardStatus"] = "Your ID Card Has Been Deactivated";
+						return View();
+					}
 					HttpContext.Session.SetString("LastName", query.Student.LastName);
 					HttpContext.Session.SetString("OtherNames", query.Student.OtherNames);
-					HttpContext.Session.SetString("IsAuth", "true");
+					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", query.Student.Id.ToString());
 
 					return RedirectToAction("Index", "Student");
@@ -73,9 +88,19 @@ namespace StudentID.Controllers
 
 			}
 
-			HttpContext.Session.SetString("isAuth", "false");
-			return NotFound();
+			HttpContext.Session.SetInt32("IsAuth", 0);
+			ViewData["Authentication"] = "[FAILED] User Authentication Failed";
+			return View();
+		}
+	
+		public IActionResult LogOut()
+		{
+			HttpContext.Session.SetString("LastName", string.Empty);
+			HttpContext.Session.SetString("OtherNames", string.Empty);
+			HttpContext.Session.SetInt32("IsAuth", 0);
+			HttpContext.Session.SetString("Id", string.Empty);
 
+			return RedirectToAction("SignIn");
 		}
 	}
 }

@@ -8,6 +8,13 @@
 <section class="section profile">
     <div class="row">
         <div class="col-sm-8 offset-sm-2">
+            <div class="pagetitle">
+                <h1>@ViewData["Title"]</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
 
             <div class="row">
                 @*<div class="col-xl-4">
@@ -71,41 +78,38 @@
                     },
                     body: JSON.stringify({WeekNo, LectureDate, StartTime, EndTime})
                 })
-                console.log(res)
                 const data = await res.json();
 
                 if(data.status){
-                     let lecBody = getEl("#lectureBody")
-                     let tr = document.createElement('tr');
+                    let lecBody = getEl("#lectureBody")
+                    let tr = document.createElement('tr');
     
-                     let wn = document.createElement('td');
-    let wnt = document.createTextNode(WeekNo)
-    wn.appendChild(wnt)
+                    let wn = document.createElement('td');
+                    let wnt = document.createTextNode(WeekNo)
+                    wn.appendChild(wnt)
 
-    let ld = document.createElement('td');
-    let ldt = document.createTextNode(LectureDate)
-    ld.appendChild(ldt)
+                    let ld = document.createElement('td');
+                    let ldt = document.createTextNode(LectureDate)
+                    ld.appendChild(ldt)
 
-    let st = document.createElement('td');
-    let stt = document.createTextNode(StartTime)
-    st.appendChild(stt)
+                    let st = document.createElement('td');
+                    let stt = document.createTextNode(StartTime)
+                    st.appendChild(stt)
 
-    let et = document.createElement('td');
-    let ett = document.createTextNode(EndTime)
-    et.appendChild(ett)
+                    let et = document.createElement('td');
+                    let ett = document.createTextNode(EndTime)
+                    et.appendChild(ett)
 
-            tr.appendChild(wn)
-            tr.appendChild(ld)
-            tr.appendChild(st)
-            tr.appendChild(et)
+                    tr.appendChild(wn)
+                    tr.appendChild(ld)
+                    tr.appendChild(st)
+                    tr.appendChild(et)
 
-            lecBody.appendChild(tr);
+                    lecBody.appendChild(tr);
                 }
 
                 getEl("#requestMsg").innerText = data.msg
                 getEl("#requestStatus").click();
-                console.log(data)
-
             }
 
             const getEl = (arg)=>{
@@ -113,45 +117,70 @@
             }
 
             const startCamera = ()=>{
+
                 // Access the camera stream
+                function onScanSuccess(decodedText, decodedResult) {
+  // handle the scanned code as you like, for example:
+  console.log(`Code matched = ${decodedText}`, decodedResult);
+}
 
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then(function(stream) {
-    // Get the video element
-    var videoElement = document.getElementById("videoElement");
+function onScanFailure(error) {
+  // handle scan failure, usually better to ignore and keep scanning.
+  // for example:
+  console.warn(`Code scan error = ${error}`);
+}
 
-    // Set the video stream as the source for the video element
-    videoElement.srcObject = stream;
+let html5QrcodeScanner = new Html5QrcodeScanner(
+  "reader",
+  { fps: 10, qrbox: {width: 250, height: 250} },
+  /* verbose= */ false);
+html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 
-    // Create a ZXing barcode reader
-    var codeReader = new ZXing.BrowserBarcodeReader();
+                //navigator.mediaDevices.getUserMedia({ 
+                //    video: true,
+                //    facingMode: { exact: "environment" } // Set to "user" for front camera
+                //})
+                //.then(function(stream) {
+                //    // Get the video element
+                //    var videoElement = document.getElementById("videoElement");
 
-    // Start decoding the video stream
-    codeReader.decodeFromVideoElement(videoElement, function(result, error) {
-      if (result) {
-        // QR code detected, do something with the result
-        console.log("QR code detected: " + result.text);
-        document.click()
-      } else if (error) {
-        // Error occurred while decoding
-        console.log("Error decoding QR code: " + error);
-      }
-    });
-  })
-  .catch(function(error) {
-    console.log("Error accessing camera: " + error);
-  });
+                //    // Set the video stream as the source for the video element
+                //    videoElement.srcObject = stream;
+
+                //    // Create a ZXing barcode reader
+                //    var codeReader = new ZXing.BrowserBarcodeReader();
+
+                //    // Start decoding the video stream
+                //    codeReader.decodeFromVideoElement(videoElement, function(result, error) {
+                //    if (result) {
+                //        // QR code detected, do something with the result
+                //        console.log("QR code detected: " + result.text);
+                //        document.click()
+                //    } else if (error) {
+                //        // Error occurred while decoding
+                //        console.log("Error decoding QR code: " + error);
+                //    }
+                //    });
+                //})
+                //.catch(function(error) {
+                //    console.log("Error accessing camera: " + error);
+                //});
 
             }
 
             const addStudent = ()=>{
                 //<video id="videoElement" width="400" height="300"></video>
-                let vid = document.createElement("video")
-                vid.id = "videoElement";
-                vid.width = "400"
-                vid.height = "300"
 
-                getEl("#requestMsg").appendChild(vid);
+                //let vid = document.createElement("video")
+                //vid.id = "videoElement";
+                //vid.width = "400"
+                //vid.height = "300"
+
+                let el = document.createElement("div")
+                el.id = "reader";
+                el.width = "400";
+
+                getEl("#requestMsg").appendChild(el);
 
                 startCamera()
                 getEl("#statusTitle").innerText = "Add Student To Current Lecture";

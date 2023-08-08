@@ -7,6 +7,8 @@ namespace StudentID.Models
 	{
 		public string Id { get; set; }
 
+		public string WeekNo { get; set; }
+
 		public IList<string> Students { get; set; }
 	}
 

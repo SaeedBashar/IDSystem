@@ -1,10 +1,10 @@
 ﻿<div class="tab-pane fade pt-3" id="students">
     <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Student List</h5>
+              <h5 class="card-title">Student Attendance List</h5>
               <div class="ls-table-container">
         <table class="table table-sm">
-          <thead>
+         @* <thead>
             <tr>
               <th>Static Column</th>
               <th>Column 1</th>
@@ -17,20 +17,28 @@
               <th>Column 3</th>
               <!-- Add more columns as needed -->
             </tr>
-          </thead>
+          </thead>*@
           <tbody>
-            <tr>
-              <td>Row 1</td>
-              <td>Data 1</td>
-              <td>Data 2</td>
-              <td>Data 3</td>
-              <td>Data 3</td>
-              <td>Data 3</td>
-              <td>Data 3</td>
-              <td>Data 3</td>
-              <td>Data 3</td>
-             
-            </tr>
+            @if(Model.attendance.Count > 0)
+            {
+               @foreach(var x in Model.attendance)
+               {
+                  <tr>
+                      <th>@x.WeekNo</th>
+                      @foreach(var i in x.Students)
+                      {
+                        <td>@i</td>
+                      }
+                  </tr>   
+               }
+            }
+            else
+            {
+                <tr>
+                    <td>No Lecture Session Available</td>
+                </tr>
+            }
+                        
            
           </tbody>
         </table>

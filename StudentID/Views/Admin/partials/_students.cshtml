@@ -1,0 +1,124 @@
+﻿<div class="tab-pane fade profile-edit pt-3" id="students">
+    <div class="row">
+        <div class="col-12">
+            <div class="card top-selling">
+
+                <div class="card-body pb-0">
+
+                    <table class="table table-borderless datatable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Student Name</th>
+                                <th scope="col">Student No</th>
+                                <th scope="col">Index No</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsContent">
+                            @if(Model.students.Count > 0)
+                            {
+                                @foreach (var stud in Model.students)
+                                {
+                                    <tr id="@stud.id">
+                                        <td>@stud.name</td>
+                                        <td>@stud.indexNo</td>
+                                        <td>@stud.studentNo</td>
+                                        <td><button onclick="getStudentDetails(this)" class="btn btn-success">View</button><i class="d-none">@stud.id</i></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td class="text-center" colspan="4">No Student Available</td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="studentDetails" type="button" class="btn btn-primary d-none" data-bs-toggle="modal" data-bs-target="#studentsModal">
+    Extra Large Modal
+</button>
+
+<div class="modal fade" id="studentsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-footer" style="border-bottom: 1px solid #dee2e6;">
+                <button onclick="changeCardStatus(this)" id="activateCard" type="button" class="btn btn-primary">Activate Card</button>
+                <button onclick="changeCardStatus(this)" id="deactivateCard" type="button" class="btn btn-danger">Deactivate Card</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <h3>Profile Photo</h3>
+                        <img style="display: block;max-width: 300px;" id="proofImg" src="">
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="card">
+                    <div class="card-body">
+                        
+                        <form id="studDetailForm" class="row g-3">
+                            <div class="col-md-6">
+                                <label for="inputName5" class="form-label">Last Name</label>
+                                <input type="text" disabled class="form-control" id="lastName">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputName5" class="form-label">Other Names</label>
+                                <input type="text" disabled class="form-control" id="otherNames">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">Card Status</label>
+                                <input type="text" disabled class="form-control" id="cardStatus">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputCity" class="form-label">Student Number</label>
+                                <input type="text" disabled class="form-control" id="studentNo">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputCity" class="form-label">Index Number</label>
+                                <input type="text" disabled class="form-control" id="indexNo">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputEmail5" class="form-label">Email</label>
+                                <input type="email" disabled class="form-control" id="email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputPassword5" class="form-label">Phone</label>
+                                <input type="text" disabled class="form-control" id="phone">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputAddress5" class="form-label">Faculty</label>
+                                <input type="text" disabled class="form-control" id="faculty">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputAddress2" class="form-label">College</label>
+                                <input type="text" disabled class="form-control" id="college">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="inputZip" class="form-label">Hall Of Affiliation</label>
+                                <input type="text" disabled class="form-control" id="hallOfAffiliation">
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
