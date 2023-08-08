@@ -21,12 +21,12 @@ namespace StudentID.Controllers
 
 		public IActionResult Index()
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return RedirectToAction("SignIn", "Auth");
-			}
-			string lid = HttpContext.Session.GetString("Id");
-
+			//if (HttpContext.Session.GetInt32("IsAuth") == 0)
+			//{
+			//	return RedirectToAction("SignIn", "Auth");
+			//}
+			//string lid = HttpContext.Session.GetString("Id");
+			string lid = User.FindFirst("UserId")?.Value;
 			if(lid != null)
 			{
 
@@ -69,8 +69,8 @@ namespace StudentID.Controllers
 				}
 				
 
-				ViewData["LastName"] = HttpContext.Session.GetString("LastName");
-				ViewData["OtherNames"] = HttpContext.Session.GetString("OtherNames");
+				//ViewData["LastName"] = HttpContext.Session.GetString("LastName");
+				//ViewData["OtherNames"] = HttpContext.Session.GetString("OtherNames");
 
 				var viewState = new
 				{
@@ -89,11 +89,11 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public IActionResult InitLecture([FromBody] InitiateLecture req)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authentication Failed!!" });
-			}
-
+			//if (HttpContext.Session.GetInt32("IsAuth") == 0)
+			//{
+			//	return Json(new { status = false, msg = "Authentication Failed!!" });
+			//}
+			string lid = User.FindFirst("UserId")?.Value;
 			try
 			{
 				DateTimeOffset date1 = DateTimeOffset.Parse(DateTime.Now.Date.ToString());
@@ -109,7 +109,7 @@ namespace StudentID.Controllers
 						WeekNo = req.WeekNo,
 						StartTime = req.StartTime,
 						EndTime = req.EndTime,
-						LecturerId = HttpContext.Session.GetString("Id")
+						LecturerId = lid
 					};
 					_db.Lectures.Add(lec);
 					_db.SaveChanges();
@@ -123,7 +123,7 @@ namespace StudentID.Controllers
 					var index = -1;
 					for (int i = 0; i < data.Lectures.Count; i++)
 					{
-						if (data.Lectures[i].LecturerId == HttpContext.Session.GetString("Id"))
+						if (data.Lectures[i].LecturerId == lid)
 						{
 							index = i;
 							break;
@@ -138,7 +138,7 @@ namespace StudentID.Controllers
 						lectureDataModels.Add(new LectureDataModel() { Id = lecId.ToString(), WeekNo = req.WeekNo, Students = new List<string> { } });
 						lect = new LectureData()
 						{
-							LecturerId = HttpContext.Session.GetString("Id"),
+							LecturerId = lid,
 							Data = lectureDataModels
 						};
 						data.Lectures.Add(lect);
@@ -169,6 +169,7 @@ namespace StudentID.Controllers
 		[HttpGet]
 		public IActionResult AddStudent([FromQuery] string reqHash)
 		{
+			string lid = User.FindFirst("UserId")?.Value;
 			var obj = _db.LectureJoins.SingleOrDefault(l => l.RequestHash == reqHash);
 
 			if(obj == null)
@@ -185,7 +186,7 @@ namespace StudentID.Controllers
 			var index = -1;
 			for (int i = 0; i < data.Lectures.Count; i++)
 			{
-				if (data.Lectures[i].LecturerId == HttpContext.Session.GetString("Id"))
+				if (data.Lectures[i].LecturerId == lid)
 				{
 					index = i;
 					break;

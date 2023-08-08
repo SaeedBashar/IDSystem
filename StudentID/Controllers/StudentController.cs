@@ -8,9 +8,11 @@ using StudentID.Models;
 using StudentID.Models.Requests;
 using Newtonsoft.Json;
 using StudentID.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace StudentID.Controllers
 {
+	[Authorize]
 	public class StudentController : Controller
 	{
 		private readonly ApplicationDbContext _db;
@@ -27,16 +29,10 @@ namespace StudentID.Controllers
 		public IActionResult Index()
 		{
 
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return RedirectToAction("SignIn", "Auth");
-			}
-			string sid = HttpContext.Session.GetString("Id");
+			string sid = User.FindFirst("UserId")?.Value;
 			if(sid != null)
 			{
-				ViewData["LastName"] = HttpContext.Session.GetString("LastName");
-				ViewData["OtherNames"] = HttpContext.Session.GetString("OtherNames");
-
+				
 				var viewState = new
 				{
 					info = _service.getStudentInfo(sid),
@@ -50,17 +46,13 @@ namespace StudentID.Controllers
 		}
 
 		[HttpPost]
-		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ModifyName(NameModificationRequest req)
 		{
 			try
 			{
-				if (HttpContext.Session.GetInt32("IsAuth") == 0)
-				{
-					return Json(new { status = false, msg = "Authentication Failed!!" });
-				}
-
-				var obj = _db.NameModificationDocuments.SingleOrDefault(n=>n.StudentId == Guid.Parse(HttpContext.Session.GetString("Id")));
+				
+				var sid = User.FindFirst("UserId")?.Value;
+				var obj = _db.NameModificationDocuments.SingleOrDefault(n=>n.StudentId == Guid.Parse(sid));
 				if ( obj != null)
 				{
 					return Json(new {status = false, msg = "[Failed] There Is A Pending Name Modification Request"});
@@ -90,7 +82,7 @@ namespace StudentID.Controllers
 							FileName = fname,
 							LastName = req.LastName,
 							OtherNames = req.OtherNames,
-							StudentId = Guid.Parse(HttpContext.Session.GetString("Id"))
+							StudentId = Guid.Parse(sid)
 						};
 						await _db.NameModificationDocuments.AddAsync(nModify);
 
@@ -103,7 +95,7 @@ namespace StudentID.Controllers
 
 					_db.NmNotifies.Add(new NmNotify()
 					{
-						StudentId = HttpContext.Session.GetString("Id"),
+						StudentId = sid,
 						Status = "Pending",
 						RequestId = imgId.ToString()
 					});
@@ -122,12 +114,8 @@ namespace StudentID.Controllers
 		//[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ImageUpdate(ImageUpdateRequest req)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authentication Failed!!" });
-			}
-
-			var obj = _db.ImageUpdates.SingleOrDefault(n=>n.StudentId == Guid.Parse(HttpContext.Session.GetString("Id")));
+			var sid = User.FindFirst("UserId")?.Value;
+			var obj = _db.ImageUpdates.SingleOrDefault(n=>n.StudentId == Guid.Parse(sid));
 			if ( obj != null)
 			{
 				return Json(new {status = false, msg = "[Failed] There Is A Pending Image Update Request"});
@@ -159,12 +147,12 @@ namespace StudentID.Controllers
 					{
 						Id = imgId,
 						FileName = fname,
-						StudentId = Guid.Parse(HttpContext.Session.GetString("Id"))
+						StudentId = Guid.Parse(sid)
 					};
 					await _db.ImageUpdates.AddAsync(imgUdpate);
 					_db.IuNotifies.Add(new IuNotify()
 					{
-						StudentId = HttpContext.Session.GetString("Id"),
+						StudentId = sid,
 						Status = "Pending",
 						RequestId = imgId.ToString()
 					});
@@ -289,57 +277,7 @@ namespace StudentID.Controllers
 							return Json(new { status = false, msg = "User Has Already Joined Lecture" });
 						}
 
-						//if (DateTime.Now.TimeOfDay < latestObject.StartTime)
-						//{
-						//	return Json(new { status = false, msg = "Lectures Has Not Started Yet!!" });
-						//}
-						//if (DateTime.Now.TimeOfDay > latestObject.EndTime)
-						//{
-						//	return Json(new { status = false, msg = "Lectures Has Ended Already!!" });
-						//}
-						//if (latestObject.StartTime < DateTime.Now.TimeOfDay && latestObject.EndTime > DateTime.Now.TimeOfDay)
-						//{
-						//	string wwwRootPath = _hostEnv.WebRootPath;
-						//	string path = Path.Combine(wwwRootPath + "/data/lectures.json");
-
-						//	var lectures = System.IO.File.ReadAllText(path);
-						//	var data = JsonConvert.DeserializeObject<LectureFile>(lectures);
-
-						//	var index = -1;
-						//	for (int i = 0; i < data.Lectures.Count; i++)
-						//	{
-						//		if (data.Lectures[i].LecturerId == lec.Id.ToString())
-						//		{
-						//			index = i;
-						//			break;
-						//		}
-						//	}
-						//	int lecIndex = -1;
-						//	for (int i = 0; i < data.Lectures[index].Data.Count; i++)
-						//	{
-						//		if (data.Lectures[index].Data[i].Id == latestObject.Id.ToString())
-						//		{
-						//			lecIndex = i;
-						//			break;
-						//		}
-						//	}
-						//	if (lecIndex != -1)
-						//	{
-						//		//TODO:Re-Implement Logic
-						//		data.Lectures[index].Data[lecIndex].Students.Add(req.IndexNo);
-						//		System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
-						//		return Json(new
-						//		{
-						//			status = true,
-						//			msg = "Lectures Joined Successfully!!",
-						//			lectureId = latestObject.Id
-						//		});
-						//	}
-						//	else
-						//	{
-						//		return Json(new { status = false, msg = "Lectures Not Found!!" });
-						//	}
-						//}
+						
 
 					}
 					else
@@ -360,7 +298,8 @@ namespace StudentID.Controllers
 
 		public IActionResult StudentInfoApi()
 		{
-			string sid = HttpContext.Session.GetString("Id");
+			var sid = User.FindFirst("UserId")?.Value;
+			//string sid = HttpContext.Session.GetString("Id");
 			var obj = _service.getStudentInfo(sid);
 
 			return Json(obj);
@@ -368,7 +307,8 @@ namespace StudentID.Controllers
 
 		public IActionResult CoursesApi()
 		{
-			string sid = HttpContext.Session.GetString("Id");
+			var sid = User.FindFirst("UserId")?.Value;
+			//string sid = HttpContext.Session.GetString("Id");
 			var obj = _service.getCourses(sid);
 
 			return Json(obj);
@@ -376,8 +316,8 @@ namespace StudentID.Controllers
 
 		public async Task<IActionResult> NotificationsApi()
 		{
-			var sid = HttpContext.Session.GetString("Id");
-
+			//var sid = HttpContext.Session.GetString("Id");
+			var sid = User.FindFirst("UserId")?.Value;
 			var response = _service.getNotificationsNm(sid);
 
 			var res = _db.IuNotifies.Where(i => i.StudentId == sid);
@@ -394,8 +334,8 @@ namespace StudentID.Controllers
 
 		public async Task<IActionResult> NotificationConfirmsApi()
 		{
-			var sid = HttpContext.Session.GetString("Id");
-			
+			//var sid = HttpContext.Session.GetString("Id");
+			var sid = User.FindFirst("UserId")?.Value;
 			var result = _db.NmNotifyConfirms.Where(n => n.StudentId == sid).ToList();
 			var result1 = _db.IuNotifyConfirms.Where(n => n.StudentId == sid).ToList();
 

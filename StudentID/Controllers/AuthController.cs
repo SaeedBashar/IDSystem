@@ -53,14 +53,7 @@ namespace StudentID.Controllers
 					claims.Add(new Claim("OtherNames", admin.OtherNames));
 					claims.Add(new Claim("UserId", admin.Id.ToString()));
 					claims.Add(new Claim("UserRole", "admin"));
-
-					HttpContext.Session.SetString("LastName", admin.LastName);
-					HttpContext.Session.SetString("OtherNames", admin.OtherNames);
-					HttpContext.Session.SetInt32("IsAuth", 1);
-					HttpContext.Session.SetString("Id", admin.Id.ToString());
-
 					page = "Admin";
-					//return RedirectToAction("Index", "Admin");
 				}
 			}
 			else if (credentials.UserRole == "lecturer")
@@ -76,11 +69,6 @@ namespace StudentID.Controllers
 					claims.Add(new Claim("OtherNames", lecturer.OtherNames));
 					claims.Add(new Claim("UserId", lecturer.Id.ToString()));
 					claims.Add(new Claim("UserRole", "lecturer"));
-
-					HttpContext.Session.SetString("LastName", lecturer.LastName);
-					HttpContext.Session.SetString("OtherNames", lecturer.OtherNames);
-					HttpContext.Session.SetInt32("IsAuth", 1);
-					HttpContext.Session.SetString("Id", lecturer.Id.ToString());
 
 					page = "Lecturer";
 					//return RedirectToAction("Index", "Lecturer");
@@ -107,11 +95,6 @@ namespace StudentID.Controllers
 					claims.Add(new Claim("UserId", query.Student.Id.ToString()));
 					claims.Add(new Claim("UserRole", "student"));
 
-					HttpContext.Session.SetString("LastName", query.Student.LastName);
-					HttpContext.Session.SetString("OtherNames", query.Student.OtherNames);
-					HttpContext.Session.SetInt32("IsAuth", 1);
-					HttpContext.Session.SetString("Id", query.Student.Id.ToString());
-
 					page = "Student";
 					//return RedirectToAction("Index", "Student");
 				}
@@ -128,18 +111,14 @@ namespace StudentID.Controllers
 				return RedirectToAction("Index", page);
 			}
 
-			HttpContext.Session.SetInt32("IsAuth", 0);
 			ViewData["Authentication"] = "[FAILED] User Authentication Failed";
 			return View();
 		}
 	
-		public IActionResult LogOut()
+		public async Task<IActionResult> LogOut()
 		{
-			HttpContext.Session.SetString("LastName", string.Empty);
-			HttpContext.Session.SetString("OtherNames", string.Empty);
-			HttpContext.Session.SetInt32("IsAuth", 0);
-			HttpContext.Session.SetString("Id", string.Empty);
-
+			
+			await HttpContext.SignOutAsync("MyCookieAuth");
 			return RedirectToAction("SignIn");
 		}
 	}

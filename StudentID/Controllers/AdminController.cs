@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using StudentID.Data;
 using StudentID.Models;
 using StudentID.Models.Requests;
 using StudentID.Services;
 using System.IO;
+using System.Security.Claims;
 
 namespace StudentID.Controllers
 {
+	[Authorize]
 	public class AdminController : Controller
 	{
 		private readonly ApplicationDbContext _db;
@@ -21,17 +24,11 @@ namespace StudentID.Controllers
 		}
 		public IActionResult Index()
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return RedirectToAction("SignIn", "Auth");
-			}
-
-			string aid = HttpContext.Session.GetString("Id");
+			
+			string aid = User.FindFirst("UserId")?.Value;
+			
 			if(aid != null)
 			{
-				ViewData["LastName"] = HttpContext.Session.GetString("LastName");
-				ViewData["OtherNames"] = HttpContext.Session.GetString("OtherNames");
-				
 				var counts = _service.GetCounts();
 				var viewState = new
 				{
@@ -52,11 +49,7 @@ namespace StudentID.Controllers
 
 		public IActionResult getStudentDetails(Guid id)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			var query = from s in _db.Students
 						join c in _db.IDCards on s.Id equals c.StudentId
 						where s.Id == id
@@ -67,10 +60,7 @@ namespace StudentID.Controllers
 
 		public IActionResult GetNameModificationDetail(Guid Id)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
+			
 			var query = (from s in _db.Students
 						 join c in _db.IDCards on s.Id equals c.StudentId
 						 join p in _db.Programs on s.ProgramId equals p.ProgramId
@@ -85,11 +75,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ApproveNameModificationRequest([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			try
 			{
 				var student = _db.Students.FirstOrDefault(x => x.Id == Guid.Parse(reqBody.StudentId));
@@ -148,11 +134,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> RejectNameModificationRequest([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			try
 			{
 				var nModify = _db.NameModificationDocuments
@@ -205,11 +187,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ApproveImageUpdate([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			try
 			{
 				var student = _db.Students.FirstOrDefault(x => x.Id == Guid.Parse(reqBody.StudentId));
@@ -266,11 +244,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public async Task<IActionResult> RejectImageUpdate([FromBody] NameModificationApproval reqBody)
 		{
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			try
 			{
 				var student = _db.Students.FirstOrDefault(x => x.Id == Guid.Parse(reqBody.StudentId));
@@ -326,11 +300,7 @@ namespace StudentID.Controllers
 		public IActionResult ChangeCardStatus([FromBody] CardStatusRequest body)
 		{
 
-			if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			{
-				return Json(new { status = false, msg = "Authenticated Failed!!" });
-			}
-
+			
 			var studentCard = _db.IDCards.SingleOrDefault(s => s.StudentId == body.StudentId);
 
 			if(studentCard != null)
