@@ -3,6 +3,8 @@ using System.Security.Cryptography;
 using StudentID.Models.Requests;
 using StudentID.Data;
 using System.Text;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace StudentID.Controllers
 {
@@ -20,10 +22,19 @@ namespace StudentID.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult SignIn(SignInRequest credentials)
+		public async Task<IActionResult> SignIn(SignInRequest credentials)
 		{
+			
 			var email = credentials.Email;
 			var pword = credentials.Password;
+
+			string page = string.Empty;
+
+			List<Claim> claims = new List<Claim>
+			{
+				new Claim(ClaimTypes.Email, email)
+			};
+
 			using (SHA256 sha256 = SHA256.Create())
 			{
 				byte[] inputBytes = Encoding.UTF8.GetBytes(credentials.Password);
@@ -38,12 +49,18 @@ namespace StudentID.Controllers
 				var admin = _db.Admins.SingleOrDefault(a => a.Email == email && a.Password == pword);
 				if (admin != null)
 				{
+					claims.Add(new Claim("LastName", admin.LastName));
+					claims.Add(new Claim("OtherNames", admin.OtherNames));
+					claims.Add(new Claim("UserId", admin.Id.ToString()));
+					claims.Add(new Claim("UserRole", "admin"));
+
 					HttpContext.Session.SetString("LastName", admin.LastName);
 					HttpContext.Session.SetString("OtherNames", admin.OtherNames);
 					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", admin.Id.ToString());
 
-					return RedirectToAction("Index", "Admin");
+					page = "Admin";
+					//return RedirectToAction("Index", "Admin");
 				}
 			}
 			else if (credentials.UserRole == "lecturer")
@@ -54,12 +71,19 @@ namespace StudentID.Controllers
 						a.LecturerNo == credentials.LecturerNumber);
 				if (lecturer != null)
 				{
+
+					claims.Add(new Claim("LastName", lecturer.LastName));
+					claims.Add(new Claim("OtherNames", lecturer.OtherNames));
+					claims.Add(new Claim("UserId", lecturer.Id.ToString()));
+					claims.Add(new Claim("UserRole", "lecturer"));
+
 					HttpContext.Session.SetString("LastName", lecturer.LastName);
 					HttpContext.Session.SetString("OtherNames", lecturer.OtherNames);
 					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", lecturer.Id.ToString());
 
-					return RedirectToAction("Index", "Lecturer");
+					page = "Lecturer";
+					//return RedirectToAction("Index", "Lecturer");
 
 				}
 			}
@@ -78,14 +102,30 @@ namespace StudentID.Controllers
 						ViewData["cardStatus"] = "Your ID Card Has Been Deactivated";
 						return View();
 					}
+					claims.Add(new Claim("LastName", query.Student.LastName));
+					claims.Add(new Claim("OtherNames", query.Student.OtherNames));
+					claims.Add(new Claim("UserId", query.Student.Id.ToString()));
+					claims.Add(new Claim("UserRole", "student"));
+
 					HttpContext.Session.SetString("LastName", query.Student.LastName);
 					HttpContext.Session.SetString("OtherNames", query.Student.OtherNames);
 					HttpContext.Session.SetInt32("IsAuth", 1);
 					HttpContext.Session.SetString("Id", query.Student.Id.ToString());
 
-					return RedirectToAction("Index", "Student");
+					page = "Student";
+					//return RedirectToAction("Index", "Student");
 				}
 
+			}
+
+			if (!string.IsNullOrEmpty(page))
+			{
+				var identity = new ClaimsIdentity(claims, "MyCookieAuth");
+				ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+				await HttpContext.SignInAsync("MyCookieAuth", principal);
+
+				return RedirectToAction("Index", page);
 			}
 
 			HttpContext.Session.SetInt32("IsAuth", 0);

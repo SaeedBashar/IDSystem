@@ -10,6 +10,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDistributedMemoryCache();
 
+builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options =>
+{
+	options.Cookie.Name = "MyCookieAuth";
+	options.LoginPath = "/Auth/SignIn";
+});
+
 builder.Services.AddSession(options =>
 {
 	options.IdleTimeout = TimeSpan.FromSeconds(100000);
@@ -29,7 +35,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
