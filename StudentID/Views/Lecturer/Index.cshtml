@@ -27,7 +27,7 @@
                     </div>
 
                     </div>*@
-                    
+
                 <div class="col-xl-8 offset-xl-2">
                     <div class="card">
                         <div class="card-body pt-3">
@@ -62,135 +62,108 @@
         </div>
     </div>
 </section>
-<partial name="_status"/>
+<partial name="_status" />
 @section Scripts{
 <script>
-            const startLecture = async ()=>{
-                const WeekNo = getEl("#weekNo").value;
-                const LectureDate = getEl("#lectureDate").value;
-                const StartTime = getEl("#startTime").value;
-                const EndTime = getEl("#endTime").value;
+                const startLecture = async ()=>{
+                    const WeekNo = getEl("#weekNo").value;
+                    const LectureDate = getEl("#lectureDate").value;
+                    const StartTime = getEl("#startTime").value;
+                    const EndTime = getEl("#endTime").value;
 
-                const res = await fetch("lecturer/InitLecture", {
-                    method: "POST",
-                    headers : {
-                        "Content-Type": "Application/json"
-                    },
-                    body: JSON.stringify({WeekNo, LectureDate, StartTime, EndTime})
-                })
-                const data = await res.json();
+                    const res = await fetch("lecturer/InitLecture", {
+                        method: "POST",
+                        headers : {
+                            "Content-Type": "Application/json"
+                        },
+                        body: JSON.stringify({WeekNo, LectureDate, StartTime, EndTime})
+                    })
+                    const data = await res.json();
 
-                if(data.status){
-                    let lecBody = getEl("#lectureBody")
-                    let tr = document.createElement('tr');
-    
-                    let wn = document.createElement('td');
-                    let wnt = document.createTextNode(WeekNo)
-                    wn.appendChild(wnt)
+                    if(data.status){
+                        let lecBody = getEl("#lectureBody")
+                        let tr = document.createElement('tr');
 
-                    let ld = document.createElement('td');
-                    let ldt = document.createTextNode(LectureDate)
-                    ld.appendChild(ldt)
+                        let wn = document.createElement('td');
+                        let wnt = document.createTextNode(WeekNo)
+                        wn.appendChild(wnt)
 
-                    let st = document.createElement('td');
-                    let stt = document.createTextNode(StartTime)
-                    st.appendChild(stt)
+                        let ld = document.createElement('td');
+                        let ldt = document.createTextNode(LectureDate)
+                        ld.appendChild(ldt)
 
-                    let et = document.createElement('td');
-                    let ett = document.createTextNode(EndTime)
-                    et.appendChild(ett)
+                        let st = document.createElement('td');
+                        let stt = document.createTextNode(StartTime)
+                        st.appendChild(stt)
 
-                    tr.appendChild(wn)
-                    tr.appendChild(ld)
-                    tr.appendChild(st)
-                    tr.appendChild(et)
+                        let et = document.createElement('td');
+                        let ett = document.createTextNode(EndTime)
+                        et.appendChild(ett)
 
-                    lecBody.appendChild(tr);
+                        tr.appendChild(wn)
+                        tr.appendChild(ld)
+                        tr.appendChild(st)
+                        tr.appendChild(et)
+
+                        lecBody.appendChild(tr);
+                    }
+
+                    getEl("#requestMsg").innerText = data.msg
+                    getEl("#requestStatus").click();
                 }
 
-                getEl("#requestMsg").innerText = data.msg
-                getEl("#requestStatus").click();
-            }
+                const getEl = (arg)=>{
+                    return document.querySelector(arg);
+                }
 
-            const getEl = (arg)=>{
-                return document.querySelector(arg);
-            }
+                const startCamera = ()=>{
 
-            const startCamera = ()=>{
+                    // Access the camera stream
+                    function onScanSuccess(decodedText, decodedResult) {
+	                // handle the scanned code as you like, for example:
+	                    alert(`Code matched = ${decodedText}`, decodedResult);
+	                }
 
-                // Access the camera stream
-                function onScanSuccess(decodedText, decodedResult) {
-  // handle the scanned code as you like, for example:
-  console.log(`Code matched = ${decodedText}`, decodedResult);
-}
+	                function onScanFailure(error) {
+	                // handle scan failure, usually better to ignore and keep scanning.
+	                // for example:
+	                    alert(`Code scan error = ${error}`);
+	                }
 
-function onScanFailure(error) {
-  // handle scan failure, usually better to ignore and keep scanning.
-  // for example:
-  console.warn(`Code scan error = ${error}`);
-}
+	                let html5QrcodeScanner = new Html5QrcodeScanner(
+	                    "reader",
+	                    { fps: 10, qrbox: {width: 250, height: 250} },
+	                    /* verbose= */ false);
+	                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                }
 
-let html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader",
-  { fps: 10, qrbox: {width: 250, height: 250} },
-  /* verbose= */ false);
-html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+                const addStudent = ()=>{
+                    //<video id="videoElement" width="400" height="300"></video>
 
-                //navigator.mediaDevices.getUserMedia({ 
-                //    video: true,
-                //    facingMode: { exact: "environment" } // Set to "user" for front camera
-                //})
-                //.then(function(stream) {
-                //    // Get the video element
-                //    var videoElement = document.getElementById("videoElement");
+                    //let vid = document.createElement("video")
+                    //vid.id = "videoElement";
+                    //vid.width = "400"
+                    //vid.height = "300"
 
-                //    // Set the video stream as the source for the video element
-                //    videoElement.srcObject = stream;
+                    let el = document.createElement("div")
+                    el.id = "reader";
+                    el.width = "400";
 
-                //    // Create a ZXing barcode reader
-                //    var codeReader = new ZXing.BrowserBarcodeReader();
+                    let parent = getEl("#requestMsg");
+                    while (parent.firstChild) {
+                        parent.removeChild(parent.firstChild);
+                    }
+                    getEl("#requestMsg").appendChild(el);
 
-                //    // Start decoding the video stream
-                //    codeReader.decodeFromVideoElement(videoElement, function(result, error) {
-                //    if (result) {
-                //        // QR code detected, do something with the result
-                //        console.log("QR code detected: " + result.text);
-                //        document.click()
-                //    } else if (error) {
-                //        // Error occurred while decoding
-                //        console.log("Error decoding QR code: " + error);
-                //    }
-                //    });
-                //})
-                //.catch(function(error) {
-                //    console.log("Error accessing camera: " + error);
-                //});
+                    startCamera()
+                    getEl("#statusTitle").innerText = "Add Student To Current Lecture";
+                    getEl("#requestStatus").click();
 
-            }
+                }
 
-            const addStudent = ()=>{
-                //<video id="videoElement" width="400" height="300"></video>
-
-                //let vid = document.createElement("video")
-                //vid.id = "videoElement";
-                //vid.width = "400"
-                //vid.height = "300"
-
-                let el = document.createElement("div")
-                el.id = "reader";
-                el.width = "400";
-
-                getEl("#requestMsg").appendChild(el);
-
-                startCamera()
-                getEl("#statusTitle").innerText = "Add Student To Current Lecture";
-                getEl("#requestStatus").click();
-
-            }
-
-            window.onload = ()=>{
-                getEl("#initLecture").addEventListener('click', startLecture);
-                getEl("#addStudentToLecture").addEventListener('click', addStudent)
-            }
+                window.onload = ()=>{
+                    getEl("#initLecture").addEventListener('click', startLecture);
+                    getEl("#addStudentToLecture").addEventListener('click', addStudent)
+                }
 </script>
 }

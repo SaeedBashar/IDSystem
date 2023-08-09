@@ -175,10 +175,10 @@
         
         const joinLecture = async (ev)=>{
 
+            console.log('joining lecture', ev.target)
             const courseId = ev.target.getAttribute('courseId')
             const indexNo = ev.target.getAttribute('indexNo')
             const studentNo = ev.target.getAttribute('studentNo')
-            
             const res = await fetch("/Student/JoinLecture", {
                 method: "POST",
                 headers: {
@@ -363,7 +363,7 @@
 
                 const lecBtns = document.querySelectorAll('.lectBtn');
                 lecBtns.forEach(element => {
-                    element.addEventListener('click', event=>joinLecture(event));
+                    element.addEventListener('click', async(event)=>await joinLecture(event));
                 });
 
                 setInterval(setNotifications, 5000);

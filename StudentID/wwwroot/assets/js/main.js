@@ -2,8 +2,9 @@
 (function() {
   "use strict";
 
-const datatables = select('.datatable', true)
+const datatables = [...document.querySelectorAll('.datatable')]
   datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable);
+      new simpleDatatables.DataTable(datatable);
   })
+
 })();
