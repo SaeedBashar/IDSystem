@@ -51,7 +51,7 @@ namespace StudentID.Controllers
 					}
 				}
 
-				IList<LectureDataModel> trObj = obj != null ? obj.Data : null;
+				IList<LectureDataModel> trObj = obj != null ? obj.Data : new List<LectureDataModel>();
 				if (obj != null)
 				{
 					for(var x=0; x<trObj.Count; x++)
@@ -89,10 +89,7 @@ namespace StudentID.Controllers
 		[HttpPost]
 		public IActionResult InitLecture([FromBody] InitiateLecture req)
 		{
-			//if (HttpContext.Session.GetInt32("IsAuth") == 0)
-			//{
-			//	return Json(new { status = false, msg = "Authentication Failed!!" });
-			//}
+			
 			string lid = User.FindFirst("UserId")?.Value;
 			try
 			{
