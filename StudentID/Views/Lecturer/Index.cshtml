@@ -119,9 +119,20 @@
                 const startCamera = ()=>{
 
                     // Access the camera stream
-                    function onScanSuccess(decodedText, decodedResult) {
+                    async function onScanSuccess(decodedText, decodedResult) {
 	                // handle the scanned code as you like, for example:
-	                    alert(`Code matched = ${decodedText}`, decodedResult);
+	                    //alert(`Code matched = ${decodedText}`, decodedResult);
+                        var data = await fetch(decodedText);
+                        data = await data.json();
+
+                        let parent = getEl("#requestMsg");
+                        while (parent.firstChild) {
+                            parent.removeChild(parent.firstChild);
+                        }
+                        getEl("#requestMsg").innerHTML = data.msg;
+                        getEl("#statusTitle").innerText = "Information";
+                        getEl("#requestStatus").click();
+
 	                }
 
 	                function onScanFailure(error) {
@@ -134,7 +145,8 @@
 	                    "reader",
 	                    { fps: 10, qrbox: {width: 250, height: 250} },
 	                    /* verbose= */ false);
-	                    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+	                    html5QrcodeScanner.render(onScanSuccess);
+	                    //html5QrcodeScanner.render(onScanSuccess, onScanFailure);
                 }
 
                 const addStudent = ()=>{
