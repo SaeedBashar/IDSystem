@@ -218,6 +218,7 @@ namespace StudentID.Controllers
 								break;
 							}
 						}
+						
 						int lecIndex = -1;
 						for (int i = 0; i < data.Lectures[index].Data.Count; i++)
 						{
@@ -245,6 +246,7 @@ namespace StudentID.Controllers
 							string reqHash;
 							if(obj == null)
 							{
+
 								using (SHA256 sha256 = SHA256.Create())
 								{
 									byte[] inputBytes = Encoding.UTF8.GetBytes(
@@ -263,6 +265,7 @@ namespace StudentID.Controllers
 									IndexNo = req.IndexNo,
 									RequestHash = reqHash
 								});
+								
 								_db.SaveChanges();
 								return Json(new { status = true, requestHash = reqHash });
 							}
@@ -276,8 +279,6 @@ namespace StudentID.Controllers
 						{
 							return Json(new { status = false, msg = "User Has Already Joined Lecture" });
 						}
-
-						
 
 					}
 					else
