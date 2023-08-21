@@ -195,7 +195,7 @@ namespace StudentID.Controllers
 
 						if (DateTime.Now.TimeOfDay.CompareTo(latestObject.StartTime) < 0)
 						{
-							return Json(new { status = false, msg = "Lecture Has Not Started Yet!!" });
+							return Json(new { status = false, msg = "No Lecture Is In Session Yet!!" });
 						}
 						
 						if (DateTime.Now.TimeOfDay.CompareTo(latestObject.EndTime) > 0)

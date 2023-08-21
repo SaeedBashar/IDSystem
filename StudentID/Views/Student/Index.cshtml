@@ -79,17 +79,14 @@
 
 @section Scripts {
     <script>
-        var studentNo;
-        var indexNo;
-
+        
         const getStudentInfo = async ()=>{
             let res = await fetch("/student/StudentInfoApi");
             let data = await res.json();
           
-
-            studentNo = data.idCard.studentNo;
-            indexNo = data.idCard.indexNo;
-
+            sessionStorage.setItem("studentNo", data.idCard.studentNo)
+            sessionStorage.setItem("indexNo", data.idCard.indexNo)
+            
             getEl("#imgLeft").setAttribute('src',"image/approved/" + data.student.imageUrl);
             getEl("#modalLeftImg").setAttribute('src',"image/approved/" + data.student.imageUrl);
             getEl("#imgRequest").setAttribute('src',"image/approved/" + data.student.imageUrl);
@@ -113,37 +110,37 @@
             setNotifications()
         }
 
-        const getCourses = async ()=>{
-            let res = await fetch("/student/CoursesApi");
-            let data = await res.json();
+        //const getCourses = async ()=>{
+        //    let res = await fetch("/student/CoursesApi");
+        //    let data = await res.json();
             
 
-            getEl("#faq-group-1").innerHTML = "";
-            if(data.length > 0){
-                for(let i=0; i<data.length; i++){
-                    getEl("#faq-group-1").innerHTML += `
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" data-bs-target="#id-${data[i].id}" type="button" data-bs-toggle="collapse">
-                                ${data[i].courseName} - ${data[i].courseCode}
-                            </button>
-                            </h2>
-                            <div id="id-${data[i].id}" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
-                            <div class="accordion-body">
-                                <button 
-                                    studentNo="${studentNo}"
-                                    indexNo="${indexNo}" 
-                                    courseId="${data[i].id}" 
-                                    class="btn btn-info lectBtn">Join Lecture</button>
-                            </div>
-                            </div>
-                        </div>
-                    `
-                }
-            }else{
-                getEl("#faq-group-1").innerHTML = "<h3 style='text-align: center'>No Lectures Available</h3>"
-            }
-        }
+        //    getEl("#faq-group-1").innerHTML = "";
+        //    if(data.length > 0){
+        //        for(let i=0; i<data.length; i++){
+        //            getEl("#faq-group-1").innerHTML += `
+        //                <div class="accordion-item">
+        //                    <h2 class="accordion-header">
+        //                    <button class="accordion-button collapsed" data-bs-target="#id-${data[i].id}" type="button" data-bs-toggle="collapse">
+        //                        ${data[i].courseName} - ${data[i].courseCode}
+        //                    </button>
+        //                    </h2>
+        //                    <div id="id-${data[i].id}" class="accordion-collapse collapse" data-bs-parent="#faq-group-1">
+        //                    <div class="accordion-body">
+        //                        <button 
+        //                            studentNo="${sessionStorage.getItem("studentNo")}"
+        //                            indexNo="${sessionStorage.getItem("indexNo")}" 
+        //                            courseId="${data[i].id}" 
+        //                            class="btn btn-info lectBtn">Join Lecture</button>
+        //                    </div>
+        //                    </div>
+        //                </div>
+        //            `
+        //        }
+        //    }else{
+        //        getEl("#faq-group-1").innerHTML = "<h3 style='text-align: center'>No Lectures Available</h3>"
+        //    }
+        //}
 
         const imageUpdateFunc = async ()=>{
             var form = getEl("#imgUpdate");
@@ -193,11 +190,15 @@
                qrCont.id = "qrcode";
                qrCont.style.width = "128px";
                qrCont.style.margin = "auto";
-              
-               getEl("#requestMsg").appendChild(qrCont);
+
+                   var parent = getEl("#requestMsg");
+                   while (parent.firstChild) {
+                        parent.removeChild(parent.firstChild); // Remove existing children
+                   }
+                   parent.appendChild(qrCont);
 
                var qrcode = new QRCode(getEl("#qrcode"), {
-                text: "Lecturer/AddStudent?reqHash=" + data.requestHash,
+                text: window.location.origin + "/Lecturer/AddStudent?reqHash=" + data.requestHash,
                 width: 128,
                 height: 128,
                 colorDark : "#000000",
@@ -359,7 +360,7 @@
                 getEl('#OCallInfo').addEventListener('click', getStudentInfo);
                 getEl('#ECallInfo').addEventListener('click', getStudentInfo);
                 getEl('#CCallInfo').addEventListener('click', getStudentInfo);
-                getEl('#LCallInfo').addEventListener('click', getCourses);
+                //getEl('#LCallInfo').addEventListener('click', getCourses);
 
                 const lecBtns = document.querySelectorAll('.lectBtn');
                 lecBtns.forEach(element => {
@@ -369,6 +370,7 @@
                 setInterval(setNotifications, 5000);
                 //setNotifications();
                 //setConfirmNotifications();
+         
         }
     </script>
 }
