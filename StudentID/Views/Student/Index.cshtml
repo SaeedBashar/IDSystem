@@ -280,19 +280,18 @@
             `;
             }
             
-            //res = await fetch("/student/CheckJoinRequestStatus?reqHash");
-            //data = await res.json
-
-            //if(data.status){
-            //    getEl('#notifyDown').lastElementChild.innerHTML += `<li class="notification-item">
-            //            <i class="bi bi-check-circle text-success"></i>
-            //            <div>
-            //                <p>Reqeuest To Join Lectures Has Been Approved</p>
-            //                <span class="badge rounded-pill bg-success">${i.status}</span>
-            //            </div>
-            //        </li>`
-            //    res = await fetch("/student/CheckJoinRequestStatus?reqHash=" + res.reqHash);
-            //}
+            res = await fetch("/student/CheckJoinRequestStatus");
+            data = await res.json();
+            if(data.status){
+                getEl('#notifyDown').lastElementChild.innerHTML += `<li class="notification-item">
+                        <i class="bi bi-check-circle text-success"></i>
+                        <div>
+                            <p>Reqeuest To Join Lectures Has Been Approved</p>
+                            <span class="badge rounded-pill bg-success">${data.status}</span>
+                        </div>
+                    </li>`
+                res = await fetch("/student/CheckJoinRequestStatus?reqHash=" + res.reqHash);
+            }
         }
         
         const setConfirmNotifications = async ()=>{

@@ -348,22 +348,59 @@ namespace StudentID.Controllers
 			return Json(new { cnm = result, ciu = result1 });
 		}
 
-        //public IActionResult CheckJoinRequestStatus([FromQuery] string? reqHash)
-        //{
-        //    if (!string.IsNullOrEmpty(reqHash))
-        //    {
-        //        var obj = _db.PendingJoinRequests.SingleOrDefault(x => x.RequestHash == reqHash);
-        //        _db.PendingJoinRequests.Remove(obj);
-        //        return Json(new { status = false });
-        //    }
-        //    else
-        //    {
-        //        var sid = User.FindFirst("UserId")?.Value;
-        //        var card = _db.IDCards.SingleOrDefault(x => x.StudentId.ToString() == sid);
-        //        var joinReq = _db.PendingJoinRequests.SingleOrDefault(x => x.StudentNo == card.StudentNo);
-        //        return Json(new { status = joinReq.IsApproved, reqHash = joinReq.RequestHash });
-        //    }
-        //}
+        public IActionResult CheckJoinRequestStatus(string reqHash)
+        {
+			
+            try
+            {
+                if (!string.IsNullOrEmpty(reqHash))
+                {
+                    var obj = _db.PendingJoinRequests.SingleOrDefault(x => x.RequestHash == reqHash);
+                    if (obj != null)
+                    {
+                        _db.PendingJoinRequests.Remove(obj);
+                    }
+                    return Json(new { status = false });
+                }
+                else
+                {
+                    var sid = User.FindFirst("UserId")?.Value;
+					if (sid != null)
+                    {
+                    var card = _db.IDCards.SingleOrDefault(x => x.StudentId.ToString() == sid);
+						if (card != null)
+                        {
+							var joinReq = _db.PendingJoinRequests.SingleOrDefault(x => x.StudentNo == card.StudentNo);
+							if(joinReq != null)
+                            {
+								return Json(new { status = joinReq.IsApproved, reqHash = joinReq.RequestHash });
+
+                            }
+							else
+							{
+								return Json(new { status = false, msg="No Request Found"});
+
+							}
+						}
+						else
+						{
+							return Json(new { status = false, msg = "No Card Found!!" });
+
+						}
+					}
+                    else
+                    {
+						return Json(new { status = false, msg = "Not Authenticated!!" });
+
+					}
+
+				}
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = false, msg = ex.Message });
+            }
+        }
 
     }
 }
