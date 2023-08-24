@@ -203,7 +203,16 @@ namespace StudentID.Controllers
 			{
 				data.Lectures[index].Data[lecIndex].Students.Add(obj.IndexNo);
 				System.IO.File.WriteAllText(path, JsonConvert.SerializeObject(data));
-				_db.LectureJoins.Remove(obj);
+
+				var pendingJoin = _db.PendingJoinRequests.FirstOrDefault(x=>x.RequestHash == reqHash);
+				if(pendingJoin != null)
+                {
+					pendingJoin.IsApproved = true;
+					_db.PendingJoinRequests.Update(pendingJoin);
+                }
+                _db.LectureJoins.Remove(obj);
+
+				_db.SaveChanges();
 				return Json(new
 				{
 					status = true,

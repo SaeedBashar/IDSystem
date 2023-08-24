@@ -36,5 +36,6 @@ namespace StudentID.Data
 		public DbSet<NmNotifyConfirm> NmNotifyConfirms { get; set; }
 		public DbSet<IuNotify> IuNotifies { get; set; }
 		public DbSet<IuNotifyConfirm> IuNotifyConfirms { get; set; }
-	}
+        public DbSet<PendingJoinRequest> PendingJoinRequests { get; set; }
+    }
 }

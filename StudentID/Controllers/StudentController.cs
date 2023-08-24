@@ -246,7 +246,7 @@ namespace StudentID.Controllers
 							string reqHash;
 							if(obj == null)
 							{
-
+								
 								using (SHA256 sha256 = SHA256.Create())
 								{
 									byte[] inputBytes = Encoding.UTF8.GetBytes(
@@ -265,7 +265,12 @@ namespace StudentID.Controllers
 									IndexNo = req.IndexNo,
 									RequestHash = reqHash
 								});
-								
+								_db.PendingJoinRequests.Add(new PendingJoinRequest()
+								{
+									RequestHash = reqHash,
+									StudentNo = req.StudentNo,
+									IsApproved = false
+								});
 								_db.SaveChanges();
 								return Json(new { status = true, requestHash = reqHash });
 							}
@@ -343,6 +348,22 @@ namespace StudentID.Controllers
 			return Json(new { cnm = result, ciu = result1 });
 		}
 
+        //public IActionResult CheckJoinRequestStatus([FromQuery] string? reqHash)
+        //{
+        //    if (!string.IsNullOrEmpty(reqHash))
+        //    {
+        //        var obj = _db.PendingJoinRequests.SingleOrDefault(x => x.RequestHash == reqHash);
+        //        _db.PendingJoinRequests.Remove(obj);
+        //        return Json(new { status = false });
+        //    }
+        //    else
+        //    {
+        //        var sid = User.FindFirst("UserId")?.Value;
+        //        var card = _db.IDCards.SingleOrDefault(x => x.StudentId.ToString() == sid);
+        //        var joinReq = _db.PendingJoinRequests.SingleOrDefault(x => x.StudentNo == card.StudentNo);
+        //        return Json(new { status = joinReq.IsApproved, reqHash = joinReq.RequestHash });
+        //    }
+        //}
 
-	}
+    }
 }
