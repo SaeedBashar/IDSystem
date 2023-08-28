@@ -1,9 +1,37 @@
-﻿<div class="tab-pane fade pt-3" id="profile-settings">
+﻿
+<div class="tab-pane fade pt-3" id="profile-settings">
     <div class="card text-center" style="overflow: auto">
+        <div class="card-header text-end">
+            <div class="fb-share-button" data-href="http://localhost:57701/student/sharing?sid=c9a646d3-9c61-4cb7-bfcd-ee2522c8f633" data-layout="" data-size=""><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A57701%2Fstudent%2Fsharing%3Fsid%3Dc9a646d3-9c61-4cb7-bfcd-ee2522c8f633&amp;src=sdkpreparse" class="fb-xfbml-parse-ignore">Share</a></div>
+            <button class="btn btn-outline-success" id="downloadCard">
+                <i class="bi bi-download"></i>
+            </button>
+            <div class="nav-item dropdown pe-3 d-inline-block">
+
+                    <a class="btn btn-outline-primary nav-profile d-flex align-items-center" href="#" data-bs-toggle="dropdown">
+                        <span id="navName" class="d-none d-md-block"><i class="bi bi-share"></i></span>
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                        <li>
+                            @*<a href="http://www.facebook.com/sharer/sharer.php?u=http://localhost:57701/student/sharing?sid=c9a646d3-9c61-4cb7-bfcd-ee2522c8f633" href="" class="dropdown-item d-flex align-items-center">*@
+                            <a href="http://www.facebook.com/sharer/sharer.php?u=@Model.baseUrl" class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-facebook"></i>
+                                <span>Facebook</span>
+                            </a>
+                            
+                            <a class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-whatsapp"></i>
+                                <span>Whatsapp</span>
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-twitter"></i>
+                                <span>twitter</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+        </div>
         <partial name="partials/_card-front"/>
     </div>
-    @*<div class="card text-center">
-        <partial name="partials/_card-back"/>
-    </div>*@
-    @*<div id="qrcode"></div>*@
 </div>

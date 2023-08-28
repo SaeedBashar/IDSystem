@@ -36,7 +36,8 @@ namespace StudentID.Controllers
 				var viewState = new
 				{
 					info = _service.getStudentInfo(sid),
-					courses = _service.getCourses(sid)
+					courses = _service.getCourses(sid),
+					baseUrl = Url.Action("Sharing", "Student", new { sid })
 				};
 
 				return View(viewState);
@@ -402,5 +403,13 @@ namespace StudentID.Controllers
             }
         }
 
-    }
+		public IActionResult Sharing([FromQuery] string sid)
+        {
+			var model = new
+			{
+				info = _service.getStudentInfo(sid)
+			};
+			return View(model);
+        }
+	}
 }

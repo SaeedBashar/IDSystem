@@ -22,4 +22,8 @@
     <Folder Include="wwwroot\Image\updates\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\svg-exportJS-master\.github\workflows\codeql-analysis.yml" />
+  </ItemGroup>
+
 </Project>

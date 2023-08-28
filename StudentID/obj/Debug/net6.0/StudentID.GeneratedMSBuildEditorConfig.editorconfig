@@ -8,113 +8,117 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = StudentID
 build_property.RootNamespace = StudentID
-build_property.ProjectDir = C:\Users\UITS-PC\Documents\Bash\Work\C#\IDSystem\StudentID\
+build_property.ProjectDir = C:\Users\BASH\Desktop\Bash\C#\KT\IDSystem\StudentID\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\UITS-PC\Documents\Bash\Work\C#\IDSystem\StudentID
+build_property.MSBuildProjectDirectory = C:\Users\BASH\Desktop\Bash\C#\KT\IDSystem\StudentID
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Admin/Index.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Admin/partials/_image-update.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Admin/partials/_image-update.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGFydGlhbHNcX2ltYWdlLXVwZGF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Admin/partials/_name-modify.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Admin/partials/_name-modify.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGFydGlhbHNcX25hbWUtbW9kaWZ5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Admin/partials/_overview.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Admin/partials/_overview.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGFydGlhbHNcX292ZXJ2aWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Admin/partials/_students.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Admin/partials/_students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5ccGFydGlhbHNcX3N0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Auth/SignIn.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Auth/SignIn.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXV0aFxTaWduSW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Home/Index.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Home/Privacy.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Lecturer/Index.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Lecturer/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Lecturer/partials/_details.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Lecturer/partials/_details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJccGFydGlhbHNcX2RldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Lecturer/partials/_lecture.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Lecturer/partials/_lecture.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJccGFydGlhbHNcX2xlY3R1cmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Lecturer/partials/_students.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Lecturer/partials/_students.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGVjdHVyZXJccGFydGlhbHNcX3N0dWRlbnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Shared/Error.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Shared/_NavBar.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Shared/_NavBar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OYXZCYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Shared/_Status.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Shared/_Status.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9TdGF0dXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/Index.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_card-back.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_card-back.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfY2FyZC1iYWNrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_card-front.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_card-front.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfY2FyZC1mcm9udC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_card-info.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_card-info.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfY2FyZC1pbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_details.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfZGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_lectures.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_lectures.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfbGVjdHVyZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Student/partials/_profileEdit.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/partials/_profileEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxwYXJ0aWFsc1xfcHJvZmlsZUVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/_ViewImports.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Student/Sharing.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3R1ZGVudFxTaGFyaW5nLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/_ViewStart.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/UITS-PC/Documents/Bash/Work/C\#/IDSystem/StudentID/Views/Shared/_Layout.cshtml]
+[C:/Users/BASH/Desktop/Bash/C\#/KT/IDSystem/StudentID/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-1iz1fe7z4w
