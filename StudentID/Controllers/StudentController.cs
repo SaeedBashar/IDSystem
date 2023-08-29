@@ -37,7 +37,7 @@ namespace StudentID.Controllers
 				{
 					info = _service.getStudentInfo(sid),
 					courses = _service.getCourses(sid),
-					baseUrl = Url.Action("Sharing", "Student", new { sid })
+					baseUrl = Url.Action("Sharing", "Student", new { sid }, Request.Scheme)
 				};
 
 				return View(viewState);
